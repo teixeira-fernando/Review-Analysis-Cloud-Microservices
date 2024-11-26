@@ -22,7 +22,7 @@ configurations {
 
 ext {
     set('testcontainers.version', "1.19.3")
-    set('awspringVersion', "3.2.0")
+    set('awspringVersion', "3.2.1")
 }
 
 repositories {
