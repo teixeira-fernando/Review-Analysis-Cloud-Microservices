@@ -28,8 +28,8 @@ jobs:
       - name: Setup Gradle
         uses: gradle/actions/setup-gradle@cc4fc85e6b35bafd578d5ffbc76a5518407e1af0 # v4.2.1
 
-      - name: Build with Gradle
-        run: ./gradlew :e2e-tests:build
+      - name: Build with Gradle - skip test execution
+        run: ./gradlew :e2e-tests:build -x test
 
         # Step 1: Run the Review Collector Docker Container
       - name: Run Review Collector Docker Container
