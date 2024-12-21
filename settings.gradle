@@ -2,3 +2,5 @@ rootProject.name = 'ReviewsAnalysis'
 
 include 'review-collector'
 include 'review-analyzer'
+include 'e2e-tests'
+
