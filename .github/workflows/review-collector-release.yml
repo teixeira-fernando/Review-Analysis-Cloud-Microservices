@@ -66,8 +66,5 @@ jobs:
           context: ./review-collector  # Path to the folder where Dockerfile is located
           file: ./review-collector/Dockerfile
           push: true
-          tags: ${{ steps.meta.outputs.tags }}
+          tags: ${{ steps.meta.outputs.tags }}, latest
           labels: ${{ steps.meta.outputs.labels }}
-
-      - name: Tag Docker Image - latest
-        run: docker tag teixeirafernando/review-collector teixeirafernando/review-collector:latest
