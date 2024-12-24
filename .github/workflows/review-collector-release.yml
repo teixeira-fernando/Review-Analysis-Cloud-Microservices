@@ -58,7 +58,5 @@ jobs:
           context: ./review-collector  # Path to the folder where Dockerfile is located
           file: ./review-collector/Dockerfile
           push: true
-          tags:
-            - ${{ steps.meta.outputs.tags }}
-            - ${{ github.sha }}
+          tags: ${{ steps.meta.outputs.tags }} , ${{ github.sha }}
           labels: ${{ steps.meta.outputs.labels }}
