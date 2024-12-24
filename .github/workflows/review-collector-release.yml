@@ -68,3 +68,6 @@ jobs:
           push: true
           tags: ${{ steps.meta.outputs.tags }}, latest
           labels: ${{ steps.meta.outputs.labels }}
+
+      - name: Tag Docker Image - latest
+        run: docker tag teixeirafernando/review-collector:latest teixeirafernando/review-collector
