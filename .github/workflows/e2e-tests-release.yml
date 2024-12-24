@@ -33,12 +33,18 @@ jobs:
 
         # Step 1: Run the Review Collector Docker Container
       - name: Run Review Collector Docker Container
+        env:
+          AWS_ACCESSKEY: ${{ secrets.AWS_ACCESSKEY }}
+          AWS_SECRETKEY: ${{ secrets.AWS_SECRETKEY }}
         run: |
           docker run -d -p 8080:8080 --name review-collector teixeirafernando/review-collector:main
           docker ps -a
 
         # Step 2: Run the Review Analyzer Docker Container
       - name: Run Review Analyzer Docker container
+        env:
+          AWS_ACCESSKEY: ${{ secrets.AWS_ACCESSKEY }}
+          AWS_SECRETKEY: ${{ secrets.AWS_SECRETKEY }}
         run: |
           docker run -d -p 8081:8081 --name review-analyzer teixeirafernando/review-analyzer:main
           docker ps -a
