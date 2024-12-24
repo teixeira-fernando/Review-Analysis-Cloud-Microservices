@@ -37,7 +37,7 @@ jobs:
           AWS_ACCESSKEY: ${{ secrets.AWS_ACCESSKEY }}
           AWS_SECRETKEY: ${{ secrets.AWS_SECRETKEY }}
         run: |
-          docker run --rm -d -p 8080:8080 --name review-collector teixeirafernando/review-collector:main
+          docker run --rm -d -p 8080:8080 --name review-collector teixeirafernando/review-collector:latest
           docker ps -a
 
         # Step 2: Run the Review Analyzer Docker Container
@@ -46,8 +46,8 @@ jobs:
           AWS_ACCESSKEY: ${{ secrets.AWS_ACCESSKEY }}
           AWS_SECRETKEY: ${{ secrets.AWS_SECRETKEY }}
         run: |
-          docker run --rm -d -p 8081:8081 --name review-analyzer teixeirafernando/review-analyzer:main
+          docker run --rm -d -p 8081:8081 --name review-analyzer teixeirafernando/review-analyzer:latest
           docker ps -a
 
       - name: Run E2E tests
-        run: ./gradlew :e2e-tests:test --scan --debug
+        run: ./gradlew :e2e-tests:test --debug
