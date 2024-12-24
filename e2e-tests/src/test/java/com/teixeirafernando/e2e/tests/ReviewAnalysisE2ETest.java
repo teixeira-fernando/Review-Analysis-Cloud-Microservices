@@ -30,6 +30,12 @@ public class ReviewAnalysisE2ETest extends TestContainersConfiguration {
         String reviewCollectorURL = Optional.ofNullable(System.getenv("REVIEW_COLLECTOR_BASE_URL")).orElse("http://localhost:8080");
         String reviewAnalyzerURL = Optional.ofNullable(System.getenv("REVIEW_ANALYZER_BASE_URL")).orElse("http://localhost:8081");
 
+
+        reviewCollectorURL = "http://" + reviewCollectorURL + ":8080";
+        reviewAnalyzerURL = "http://" + reviewAnalyzerURL + ":8080";
+
+        System.out.println(reviewCollectorURL);
+        System.out.println(reviewAnalyzerURL);
         System.out.println(review);
 
         String id = given()
