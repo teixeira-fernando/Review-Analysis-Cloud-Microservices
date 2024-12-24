@@ -10,6 +10,7 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import java.time.Duration;
+import java.util.Optional;
 
 public class ReviewAnalysisE2ETest extends TestContainersConfiguration {
 
@@ -26,8 +27,8 @@ public class ReviewAnalysisE2ETest extends TestContainersConfiguration {
                 }
                 """;
 
-        String reviewCollectorURL = "http://localhost:8080";
-        String reviewAnalyzerURL = "http://localhost:8081";
+        String reviewCollectorURL = Optional.ofNullable(System.getenv("REVIEW_COLLECTOR_BASE_URL")).orElse("http://localhost:8080");
+        String reviewAnalyzerURL = Optional.ofNullable(System.getenv("REVIEW_ANALYZER_BASE_URL")).orElse("http://localhost:8081");
 
         System.out.println(review);
 
