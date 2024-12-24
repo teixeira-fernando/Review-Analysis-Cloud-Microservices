@@ -50,4 +50,4 @@ jobs:
           docker ps -a
 
       - name: Run E2E tests
-        run: ./gradlew :e2e-tests:test
+        run: ./gradlew :e2e-tests:test --scan
