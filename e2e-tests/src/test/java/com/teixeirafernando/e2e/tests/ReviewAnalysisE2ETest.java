@@ -27,22 +27,22 @@ public class ReviewAnalysisE2ETest extends TestContainersConfiguration {
                 }
                 """;
 
-        String reviewCollectorURL = Optional.ofNullable(System.getenv("REVIEW_COLLECTOR_BASE_URL")).orElse("http://localhost:8080");
-        String reviewAnalyzerURL = Optional.ofNullable(System.getenv("REVIEW_ANALYZER_BASE_URL")).orElse("http://localhost:8081");
+        String baseReviewCollectorURL = Optional.ofNullable(System.getenv("REVIEW_COLLECTOR_BASE_URL")).orElse("localhost");
+        String baseReviewAnalyzerURL = Optional.ofNullable(System.getenv("REVIEW_ANALYZER_BASE_URL")).orElse("localhost");
 
 
-        reviewCollectorURL = "http://" + reviewCollectorURL + ":8080";
-        reviewAnalyzerURL = "http://" + reviewAnalyzerURL + ":8080";
+        String fullReviewCollectorURL = "http://" + baseReviewCollectorURL + ":8080";
+        String fullReviewAnalyzerURL = "http://" + baseReviewAnalyzerURL + ":8080";
 
-        System.out.println(reviewCollectorURL);
-        System.out.println(reviewAnalyzerURL);
+        System.out.println(fullReviewCollectorURL);
+        System.out.println(fullReviewAnalyzerURL);
         System.out.println(review);
 
         String id = given()
                 .contentType("application/json")
                 .body(review)
                 .when()
-                .post(reviewCollectorURL + "/api/review")
+                .post(fullReviewCollectorURL + "/api/review")
                 .then()
                 .assertThat()
                 .statusCode(HttpStatus.SC_OK)
@@ -58,7 +58,7 @@ public class ReviewAnalysisE2ETest extends TestContainersConfiguration {
                     given()
                             .contentType("application/json")
                             .when()
-                            .get(reviewAnalyzerURL + "/api/messages/"+id)
+                            .get(fullReviewAnalyzerURL + "/api/messages/" + id)
                             .then()
                             .assertThat()
                             .statusCode(HttpStatus.SC_OK)
