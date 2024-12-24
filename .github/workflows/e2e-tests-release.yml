@@ -40,6 +40,7 @@ jobs:
           docker run --rm -d -p 8080:8080 --name review-collector teixeirafernando/review-collector:latest
           docker ps -a
           REVIEW_COLLECTOR_BASE_URL=$(docker inspect -f '{{range .NetworkSettings.Networks}}{{.IPAddress}}{{end}}' review-collector)
+          echo "REVIEW_COLLECTOR_BASE_URL=$REVIEW_COLLECTOR_BASE_URL" >> $GITHUB_ENV
 
         # Step 2: Run the Review Analyzer Docker Container
       - name: Run Review Analyzer Docker container
@@ -50,6 +51,7 @@ jobs:
           docker run --rm -d -p 8081:8081 --name review-analyzer teixeirafernando/review-analyzer:latest
           docker ps -a
           REVIEW_ANALYZER_BASE_URL=$(docker inspect -f '{{range .NetworkSettings.Networks}}{{.IPAddress}}{{end}}' review-analyzer)
+          echo "REVIEW_ANALYZER_BASE_URL=$REVIEW_ANALYZER_BASE_URL" >> $GITHUB_ENV
 
       - name: Run E2E tests
         run: |
