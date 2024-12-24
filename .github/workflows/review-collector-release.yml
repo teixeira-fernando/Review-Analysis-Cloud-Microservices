@@ -57,7 +57,7 @@ jobs:
             type=semver,pattern={{version}}
             type=semver,pattern={{major}}.{{minor}}
             type=semver,pattern={{major}}
-            type=sha    
+            type=sha
 
       - name: Build and push Docker image
         id: push
@@ -68,3 +68,6 @@ jobs:
           push: true
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
+
+      - name: Tag Docker Image - latest
+        run: docker tag teixeirafernando/review-collector teixeirafernando/review-collector:latest
