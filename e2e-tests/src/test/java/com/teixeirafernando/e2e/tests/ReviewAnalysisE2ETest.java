@@ -32,7 +32,7 @@ public class ReviewAnalysisE2ETest extends TestContainersConfiguration {
 
 
         String fullReviewCollectorURL = "http://" + baseReviewCollectorURL + ":8080";
-        String fullReviewAnalyzerURL = "http://" + baseReviewAnalyzerURL + ":8080";
+        String fullReviewAnalyzerURL = "http://" + baseReviewAnalyzerURL + ":8081";
 
         System.out.println(fullReviewCollectorURL);
         System.out.println(fullReviewAnalyzerURL);
@@ -49,6 +49,8 @@ public class ReviewAnalysisE2ETest extends TestContainersConfiguration {
                 .body("productId", equalTo("da6037a6-a375-40e2-a8a6-1bb5f9448df0"))
                 .extract()
                 .path("id");
+
+        System.out.println("First request worked as expected");
 
 
         await()
