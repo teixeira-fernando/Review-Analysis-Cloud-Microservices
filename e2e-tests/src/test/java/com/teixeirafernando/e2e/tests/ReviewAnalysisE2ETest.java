@@ -30,13 +30,16 @@ public class ReviewAnalysisE2ETest extends TestContainersConfiguration {
         String baseReviewCollectorURL = Optional.ofNullable(System.getenv("REVIEW_COLLECTOR_BASE_URL")).orElse("localhost");
         String baseReviewAnalyzerURL = Optional.ofNullable(System.getenv("REVIEW_ANALYZER_BASE_URL")).orElse("localhost");
 
-
         String fullReviewCollectorURL = "http://" + baseReviewCollectorURL + ":8080";
         String fullReviewAnalyzerURL = "http://" + baseReviewAnalyzerURL + ":8081";
 
         System.out.println(fullReviewCollectorURL);
         System.out.println(fullReviewAnalyzerURL);
         System.out.println(review);
+
+        given().when().get(fullReviewCollectorURL + "/actuator/health").then().statusCode(HttpStatus.SC_OK).body(equalTo("{\"status\":\"UP\"}"));
+
+        System.out.println("review collector is up and running");
 
         String id = given()
                 .contentType("application/json")
