@@ -53,6 +53,9 @@ jobs:
           echo "REVIEW_ANALYZER_BASE_URL=$REVIEW_ANALYZER_BASE_URL" >> $GITHUB_ENV
 
       - name: Run E2E tests
+        env:
+          REVIEW_COLLECTOR_BASE_URL: ${{ env.REVIEW_COLLECTOR_BASE_URL }}
+          REVIEW_ANALYZER_BASE_URL: ${{ env.REVIEW_ANALYZER_BASE_URL }}
         run: |
           echo "Container 1 IP: $REVIEW_COLLECTOR_BASE_URL"
           echo "Container 2 IP: $REVIEW_ANALYZER_BASE_URL"
