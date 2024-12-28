@@ -1,9 +1,8 @@
-name: E2E tests - Release Process
+name: E2E Tests - Continuous Integration
 
 on:
-  workflow_run:
-    workflows: [ "Review Analyzer - Release Process", "Review Collector - Release Process" ]
-    types: [ completed ]
+  pull_request:
+    branches: ["main"]
 
 jobs:
   build:
@@ -54,10 +53,12 @@ jobs:
           echo "REVIEW_ANALYZER_BASE_URL=$REVIEW_ANALYZER_BASE_URL" >> $GITHUB_ENV
 
       - name: Run E2E tests
+        env:
+          REVIEW_COLLECTOR_BASE_URL: ${{ env.REVIEW_COLLECTOR_BASE_URL }}
+          REVIEW_ANALYZER_BASE_URL: ${{ env.REVIEW_ANALYZER_BASE_URL }}
         run: |
           echo "Container 1 IP: $REVIEW_COLLECTOR_BASE_URL"
           echo "Container 2 IP: $REVIEW_ANALYZER_BASE_URL"
-          curl --location 'http://$REVIEW_COLLECTOR_BASE_URL:8080/api/review' --header 'Content-Type: application/json' --data '{"id": "e921412f-af4b-4b1f-bec4-734982b2fb9c", "productId": "da6037a6-a375-40e2-a8a6-1bb5f9448df0", "customerName": "sdvsdvsdvsvdsdvcvvvdvvccv", "reviewContent": "svsdvsdvsdvsdv", "rating": 5.0 }'
           ./gradlew :e2e-tests:test --debug
 
       - name: Archive logs and test results
