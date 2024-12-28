@@ -2,10 +2,6 @@ name: E2E Tests - Continuous Integration
 
 on:
   pull_request:
-    paths:
-      - 'review-analyzer/**'
-      - 'e2e-tests/**'
-      - 'review-collector/**'
     branches: ["main"]
 
 jobs:
