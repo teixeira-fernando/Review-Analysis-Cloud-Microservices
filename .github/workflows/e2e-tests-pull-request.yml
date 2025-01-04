@@ -59,7 +59,8 @@ jobs:
         run: |
           echo "Container 1 IP: $REVIEW_COLLECTOR_BASE_URL"
           echo "Container 2 IP: $REVIEW_ANALYZER_BASE_URL"
-          docker run --rm -it -e REVIEW_COLLECTOR_BASE_URL=$REVIEW_COLLECTOR_BASE_URL -e REVIEW_ANALYZER_BASE_URL=$REVIEW_ANALYZER_BASE_URL -v /var/run/docker.sock:/var/run/docker.sock teixeirafernando/review-analysis-e2e-tests
+          sleep 10
+          docker run --rm -e REVIEW_COLLECTOR_BASE_URL=$REVIEW_COLLECTOR_BASE_URL -e REVIEW_ANALYZER_BASE_URL=$REVIEW_ANALYZER_BASE_URL -v /var/run/docker.sock:/var/run/docker.sock teixeirafernando/review-analysis-e2e-tests
 
       - name: Archive logs and test results
         if: always()
