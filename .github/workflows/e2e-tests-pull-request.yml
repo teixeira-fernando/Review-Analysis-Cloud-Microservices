@@ -59,6 +59,7 @@ jobs:
         run: |
           echo "Container 1 IP: $REVIEW_COLLECTOR_BASE_URL"
           echo "Container 2 IP: $REVIEW_ANALYZER_BASE_URL"
+          sleep 10
           ./gradlew :e2e-tests:test --debug
 
       - name: Archive logs and test results
