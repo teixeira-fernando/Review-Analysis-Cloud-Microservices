@@ -44,7 +44,7 @@ jobs:
           password: ${{ secrets.DOCKER_PASSWORD }}
 
       - name: build and push e2e-tests docker image
-        uses: |
+        run: |
           docker build . -t teixeirafernando/review-analysis-e2e-tests -f ./Dockerfile_e2e_tests
           docker push teixeirafernando/review-analysis-e2e-tests
 
