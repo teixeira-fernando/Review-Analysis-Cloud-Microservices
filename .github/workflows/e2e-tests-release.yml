@@ -37,40 +37,19 @@ jobs:
       - name: Set up QEMU
         uses: docker/setup-qemu-action@v2
 
-      - name: Build with Gradle - skip test execution
-        run: ./gradlew :e2e-tests:build -x test
-
-        # Step 1: Run the Review Collector Docker Container
-      - name: Run Review Collector Docker Container
-        env:
-          AWS_ACCESSKEY: ${{ secrets.AWS_ACCESSKEY }}
-          AWS_SECRETKEY: ${{ secrets.AWS_SECRETKEY }}
-        run: |
-          docker run --rm -d -p 8080:8080 --name review-collector teixeirafernando/review-collector:latest
-          docker ps -a
-          REVIEW_COLLECTOR_BASE_URL=$(docker inspect -f '{{range .NetworkSettings.Networks}}{{.IPAddress}}{{end}}' review-collector)
-          echo "REVIEW_COLLECTOR_BASE_URL=$REVIEW_COLLECTOR_BASE_URL" >> $GITHUB_ENV
-
-        # Step 2: Run the Review Analyzer Docker Container
-      - name: Run Review Analyzer Docker container
-        env:
-          AWS_ACCESSKEY: ${{ secrets.AWS_ACCESSKEY }}
-          AWS_SECRETKEY: ${{ secrets.AWS_SECRETKEY }}
-        run: |
-          docker run --rm -d -p 8081:8081 --name review-analyzer teixeirafernando/review-analyzer:latest
-          docker ps -a
-          REVIEW_ANALYZER_BASE_URL=$(docker inspect -f '{{range .NetworkSettings.Networks}}{{.IPAddress}}{{end}}' review-analyzer)
-          echo "REVIEW_ANALYZER_BASE_URL=$REVIEW_ANALYZER_BASE_URL" >> $GITHUB_ENV
-
-      - name: Run E2E tests
-        run: |
-          echo "Container 1 IP: $REVIEW_COLLECTOR_BASE_URL"
-          echo "Container 2 IP: $REVIEW_ANALYZER_BASE_URL"
-          ./gradlew :e2e-tests:test --debug
-
-      - name: Archive logs and test results
-        if: always()
-        uses: actions/upload-artifact@v4
+      - name: Log in to Docker Hub
+        uses: docker/login-action@f4ef78c080cd8ba55a85445d5b36e214a81df20a
         with:
-          name: test-run-logs
-          path: e2e-tests/build/reports/**
+          username: ${{ secrets.DOCKER_USERNAME }}
+          password: ${{ secrets.DOCKER_PASSWORD }}
+
+      - name: build and push e2e-tests docker image
+        uses: |
+          docker build . -t teixeirafernando/review-analysis-e2e-tests -f ./Dockerfile_e2e_tests
+          docker push teixeirafernando/review-analysis-e2e-tests
+
+      - name: Run docker-compose
+        run: docker compose up --build --abort-on-container-exit
+
+      - name: Tear down Docker Compose
+        run: docker compose down

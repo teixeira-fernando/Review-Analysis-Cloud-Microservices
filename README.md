@@ -39,3 +39,14 @@
 ## Pipeline configuration
 
 [TODO]
+
+
+## Development info
+
+### Running E2E tests using Docker alone
+
+From root folder, run the following commands:
+"docker build -t my-e2e-tests . -f Dockerfile_e2e_tests"
+
+"docker run --rm -it -e REVIEW_COLLECTOR_BASE_URL=$REVIEW_COLLECTOR_BASE_URL -e REVIEW_ANALYZER_BASE_URL=$REVIEW_ANALYZER_BASE_URL -v /var/run/docker.sock:/var/run/docker.sock my-e2e-tests"
+
