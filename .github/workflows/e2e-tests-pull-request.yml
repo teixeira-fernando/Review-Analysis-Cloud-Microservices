@@ -34,10 +34,10 @@ jobs:
         uses: docker/setup-qemu-action@v2
 
       - name: Run docker-compose
-        run: docker-compose up --build --abort-on-container-exit
+        run: docker compose up --build --abort-on-container-exit
 
       - name: Tear down Docker Compose
-        run: docker-compose down
+        run: docker compose down
 
 
 
