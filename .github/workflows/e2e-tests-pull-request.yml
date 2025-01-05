@@ -27,8 +27,19 @@ jobs:
       - name: Setup Gradle
         uses: gradle/actions/setup-gradle@cc4fc85e6b35bafd578d5ffbc76a5518407e1af0 # v4.2.1
 
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v2
+
+      - name: Set up QEMU
+        uses: docker/setup-qemu-action@v2
+
       - name: Run docker-compose
-        run: docker-compose up
+        run: docker-compose up --build --abort-on-container-exit
+
+      - name: Tear down Docker Compose
+        run: docker-compose down
+
+
 
 
 
