@@ -9,6 +9,9 @@ jobs:
   build:
 
     runs-on: ubuntu-latest
+    env:
+      AWS_ACCESSKEY: ${{ secrets.AWS_ACCESSKEY }}
+      AWS_SECRETKEY: ${{ secrets.AWS_SECRETKEY }}
     permissions:
       contents: read
       packages: write
@@ -57,7 +60,6 @@ jobs:
         run: |
           echo "Container 1 IP: $REVIEW_COLLECTOR_BASE_URL"
           echo "Container 2 IP: $REVIEW_ANALYZER_BASE_URL"
-          curl --location 'localhost:8080/api/review' --header 'Content-Type: application/json' --data '{"id": "e921412f-af4b-4b1f-bec4-734982b2fb9c", "productId": "da6037a6-a375-40e2-a8a6-1bb5f9448df0", "customerName": "sdvsdvsdvsvdsdvcvvvdvvccv", "reviewContent": "svsdvsdvsdvsdv", "rating": 5.0 }'
           ./gradlew :e2e-tests:test --debug
 
       - name: Archive logs and test results
