@@ -29,9 +29,7 @@ services:
 
 
   review-collector:
-    build:
-      context: ./review-collector
-      dockerfile: Dockerfile
+    image: teixeirafernando/review-collector
     container_name: review-collector
     environment:
       # Set an env var to use later in the code
@@ -48,9 +46,7 @@ services:
       - ls
 
   review-analyzer:
-    build:
-      context: ./review-analyzer
-      dockerfile: Dockerfile
+    image: teixeirafernando/review-analyzer
     container_name: review-analyzer
     environment:
       # Set an env var to use later in the code
