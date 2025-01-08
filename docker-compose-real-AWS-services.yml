@@ -1,0 +1,33 @@
+version: '3'
+
+services:
+  review-collector:
+    image: teixeirafernando/review-collector
+    environment:
+      - AWS_ACCESSKEY=${AWS_ACCESSKEY}
+      - AWS_SECRETKEY=${AWS_SECRETKEY}
+    container_name: review-collector
+    ports:
+      - "8080:8080"
+
+  review-analyzer:
+    image: teixeirafernando/review-analyzer
+    environment:
+      - AWS_ACCESSKEY=${AWS_ACCESSKEY}
+      - AWS_SECRETKEY=${AWS_SECRETKEY}
+    container_name: review-analyzer
+    ports:
+      - "8081:8081"
+
+  e2e-tests:
+    image: teixeirafernando/review-analysis-e2e-tests
+    environment:
+      - REVIEW_COLLECTOR_BASE_URL=review-collector
+      - REVIEW_ANALYZER_BASE_URL=review-analyzer
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+    depends_on:
+      - review-collector
+      - review-analyzer
+    entrypoint: ["sh", "-c", "while ! nc -z review-collector 8080; do sleep 1; done; while ! nc -z review-analyzer 8081; do sleep 1; done; ./gradlew :e2e-tests:test"]
+

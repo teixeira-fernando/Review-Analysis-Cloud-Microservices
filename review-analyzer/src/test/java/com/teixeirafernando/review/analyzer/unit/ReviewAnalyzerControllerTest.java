@@ -41,7 +41,7 @@ public class ReviewAnalyzerControllerTest {
         // Mock the behavior of ApplicationProperties and ReviewCollectorService
         when(properties.bucket()).thenReturn(bucketName);
         when(reviewCollectorService.reviewExists(properties.bucket(), id.toString())).thenReturn(true);
-        when(reviewCollectorService.downloadAsString(properties.bucket(), id.toString())).thenReturn(review.toString());
+        when(reviewCollectorService.read(properties.bucket(), id.toString())).thenReturn(review);
 
         // Act & Assert
         mockMvc.perform(get("/api/messages/"+id))

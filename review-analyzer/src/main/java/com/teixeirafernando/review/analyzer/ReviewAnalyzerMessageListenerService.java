@@ -1,6 +1,5 @@
 package com.teixeirafernando.review.analyzer;
 
-import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.awspring.cloud.sqs.annotation.SqsListener;
@@ -44,13 +43,13 @@ public class ReviewAnalyzerMessageListenerService {
         }
 
         System.out.println(analyzedReview.toString());
-
-
-        String key = analyzedReview.getId().toString();
         ByteArrayInputStream is = new ByteArrayInputStream(
                 analyzedReview.toString().getBytes(StandardCharsets.UTF_8)
         );
-        this.storageService.upload(bucketName, key, is);
-        System.out.println("Uploaded File "+key+"to bucket "+bucketName);
+
+        String key = analyzedReview.getId().toString();
+        this.storageService.store(bucketName, key, analyzedReview);
+
+        System.out.println("Stored File "+key+"to bucket "+bucketName);
     }
 }
