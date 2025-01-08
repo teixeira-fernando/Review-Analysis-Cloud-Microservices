@@ -66,6 +66,23 @@ services:
     networks:
       - ls
 
+  e2e-tests:
+    image: teixeirafernando/review-analysis-e2e-tests
+    environment:
+      - REVIEW_COLLECTOR_BASE_URL=review-collector
+      - REVIEW_ANALYZER_BASE_URL=review-analyzer
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+    depends_on:
+      - review-collector
+      - review-analyzer
+    dns:
+      # Set the DNS server to be the LocalStack container
+      - 10.0.2.20
+    networks:
+      - ls
+    entrypoint: [ "sh", "-c", "while ! nc -z review-collector 8080; do sleep 1; done; while ! nc -z review-analyzer 8081; do sleep 1; done; ./gradlew :e2e-tests:test" ]
+
 networks:
   ls:
     ipam:
