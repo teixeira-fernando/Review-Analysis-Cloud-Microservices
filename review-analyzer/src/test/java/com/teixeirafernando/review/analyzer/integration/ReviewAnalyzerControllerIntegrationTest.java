@@ -43,12 +43,7 @@ public class ReviewAnalyzerControllerIntegrationTest extends TestContainersConfi
         UUID id = UUID.randomUUID();
         AnalyzedReview analyzedReview = new AnalyzedReview(id,UUID.randomUUID(),"test","test",5.0);
 
-
-        ByteArrayInputStream inputStream = new ByteArrayInputStream(
-                analyzedReview.toString().getBytes(StandardCharsets.UTF_8)
-        );
-
-        this.reviewAnalyzerStorageService.upload(TestContainersConfiguration.BUCKET_NAME, id.toString(), inputStream);
+        this.reviewAnalyzerStorageService.store(TestContainersConfiguration.BUCKET_NAME, id.toString(), analyzedReview);
 
         // Act & Assert
         mockMvc.perform(get("/api/messages/"+id))

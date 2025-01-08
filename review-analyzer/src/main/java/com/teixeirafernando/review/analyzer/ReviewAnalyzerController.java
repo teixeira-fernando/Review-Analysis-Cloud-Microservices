@@ -25,7 +25,7 @@ public class ReviewAnalyzerController {
     @GetMapping(value = "/api/messages/{id}",  produces = { "application/json" })
     public ResponseEntity<String> get(@PathVariable String id) throws IOException {
         if (storageService.reviewExists(properties.bucket(), id)){
-            return ResponseEntity.ok(storageService.downloadAsString(properties.bucket(), id));
+            return ResponseEntity.ok(storageService.read(properties.bucket(), id).toString());
         }
         else {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Analyzed Review with the provided id was not found. Please check if the id is correct.");

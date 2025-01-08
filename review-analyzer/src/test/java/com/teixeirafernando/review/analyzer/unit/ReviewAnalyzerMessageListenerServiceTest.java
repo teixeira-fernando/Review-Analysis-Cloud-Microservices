@@ -65,12 +65,12 @@ public class ReviewAnalyzerMessageListenerServiceTest
         // Capture the arguments passed to upload
         ArgumentCaptor<String> bucketNameCaptor = ArgumentCaptor.forClass(String.class);
         ArgumentCaptor<String> keyCaptor = ArgumentCaptor.forClass(String.class);
-        ArgumentCaptor<InputStream> objectCaptor = ArgumentCaptor.forClass(InputStream.class);
+        ArgumentCaptor<AnalyzedReview> objectCaptor = ArgumentCaptor.forClass(AnalyzedReview.class);
 
-        verify(s3Template, times(1)).upload(bucketNameCaptor.capture(), keyCaptor.capture(), objectCaptor.capture());
+        verify(s3Template, times(1)).store(bucketNameCaptor.capture(), keyCaptor.capture(), objectCaptor.capture());
 
         // Assert the captured values
         assertThat(id.toString()).isEqualTo(keyCaptor.getValue(), "Object key should match");
-        assertThat(review.toString()).isEqualTo(new String(objectCaptor.getValue().readAllBytes(), StandardCharsets.UTF_8), "Analyzed Review should match");
+        assertThat(review.toString()).isEqualTo(objectCaptor.getValue().toString(), "Analyzed Review should match");
     }
 }
