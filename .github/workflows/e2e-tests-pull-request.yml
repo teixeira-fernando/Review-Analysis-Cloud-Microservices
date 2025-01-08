@@ -5,9 +5,6 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
-    env:
-      AWS_ACCESSKEY: ${{ secrets.AWS_ACCESSKEY }}
-      AWS_SECRETKEY: ${{ secrets.AWS_SECRETKEY }}
     permissions:
       contents: read
       packages: write
