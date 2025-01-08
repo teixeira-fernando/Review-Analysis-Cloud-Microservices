@@ -5,13 +5,9 @@ import io.awspring.cloud.s3.ObjectMetadata;
 import io.awspring.cloud.s3.S3Resource;
 import io.awspring.cloud.s3.S3Template;
 
-import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.nio.charset.StandardCharsets;
 import java.util.SequencedCollection;
-
-import org.json.JSONObject;
 import org.springframework.stereotype.Service;
 import software.amazon.awssdk.services.s3.model.NoSuchKeyException;
 
