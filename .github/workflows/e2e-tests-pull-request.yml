@@ -5,9 +5,6 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
-    env:
-      AWS_ACCESSKEY: ${{ secrets.AWS_ACCESSKEY }}
-      AWS_SECRETKEY: ${{ secrets.AWS_SECRETKEY }}
     permissions:
       contents: read
       packages: write
@@ -28,7 +25,7 @@ jobs:
         uses: docker/setup-buildx-action@v2
       - name: Set up QEMU
         uses: docker/setup-qemu-action@v2
-      - name: Run docker-compose
-        run: docker compose -f docker-compose-real-AWS-services.yml up --build --abort-on-container-exit
+      - name: Run docker-compose - LocalStack setup
+        run: docker compose up --build --abort-on-container-exit
       - name: Tear down Docker Compose
         run: docker compose down

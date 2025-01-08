@@ -49,7 +49,7 @@ jobs:
           docker push teixeirafernando/review-analysis-e2e-tests
 
       - name: Run docker-compose
-        run: docker compose up --build --abort-on-container-exit
+        run: docker compose -f docker-compose-real-AWS-services.yml up --build --abort-on-container-exit
 
       - name: Tear down Docker Compose
         run: docker compose down
