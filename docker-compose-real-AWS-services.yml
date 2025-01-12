@@ -2,7 +2,7 @@ version: '3'
 
 services:
   review-collector:
-    image: teixeirafernando/review-collector
+    image: teixeirafernando/review-collector:latest
     environment:
       - AWS_ACCESSKEY=${AWS_ACCESSKEY}
       - AWS_SECRETKEY=${AWS_SECRETKEY}
@@ -11,7 +11,7 @@ services:
       - "8080:8080"
 
   review-analyzer:
-    image: teixeirafernando/review-analyzer
+    image: teixeirafernando/review-analyzer:latest
     environment:
       - AWS_ACCESSKEY=${AWS_ACCESSKEY}
       - AWS_SECRETKEY=${AWS_SECRETKEY}
@@ -20,7 +20,7 @@ services:
       - "8081:8081"
 
   e2e-tests:
-    image: teixeirafernando/review-analysis-e2e-tests
+    image: teixeirafernando/review-analysis-e2e-tests:latest
     environment:
       - REVIEW_COLLECTOR_BASE_URL=review-collector
       - REVIEW_ANALYZER_BASE_URL=review-analyzer

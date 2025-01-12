@@ -34,9 +34,6 @@ jobs:
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v2
 
-      - name: Set up QEMU
-        uses: docker/setup-qemu-action@v2
-
       - name: Log in to Docker Hub
         uses: docker/login-action@f4ef78c080cd8ba55a85445d5b36e214a81df20a
         with:
@@ -45,7 +42,7 @@ jobs:
 
       - name: build and push e2e-tests docker image
         run: |
-          docker build . -t teixeirafernando/review-analysis-e2e-tests -f ./Dockerfile_e2e_tests
+          docker build . -t teixeirafernando/review-analysis-e2e-tests -f ./e2e-tests/Dockerfile
           docker push teixeirafernando/review-analysis-e2e-tests
 
       - name: Run docker-compose
