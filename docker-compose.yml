@@ -2,7 +2,7 @@ version: '3'
 
 services:
   localstack: # LocalStack container
-    image: localstack/localstack:stable
+    image: localstack/localstack:4.0.3
     ports:
       # Now only required if you need to access LocalStack from the host
       - "127.0.0.1:4566:4566"
