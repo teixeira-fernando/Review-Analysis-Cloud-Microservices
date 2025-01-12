@@ -6,8 +6,8 @@ on:
     types: [ completed ]
 
 jobs:
-  build:
-
+  run-e2e-tests-with-real-AWS-services:
+    if: ${{ github.event.workflow_run.conclusion == 'success' }}
     runs-on: ubuntu-latest
     env:
       AWS_ACCESSKEY: ${{ secrets.AWS_ACCESSKEY }}

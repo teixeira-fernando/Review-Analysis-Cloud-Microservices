@@ -8,20 +8,8 @@ services:
       - "127.0.0.1:4566:4566"
       # Now only required if you need to access LocalStack from the host
       - "127.0.0.1:4510-4559:4510-4559"
-    environment:
-        # LocalStack configuration: https://docs.localstack.cloud/references/configuration/
-      - DEBUG=1
-      #- SERVICES=s3,sqs
-      - LS_LOG=debug
-      #- SERVICES=s3:4566,sqs
-      #- HOSTNAME=localstack
-      #- HOSTNAME_EXTERNAL=localstack
     volumes:
-      # Here you mount your setup file so it will be executed
-      # when the container starts
       - ./localstack-setup.sh:/etc/localstack/init/ready.d/script.sh
-      #- ./localstack-setup.sh:/docker-entrypoint-initaws.d/localstack-setup.sh
-    # entrypoint: /bin/sh -c "echo 'AAAAAAAAAAAAAAAAAAA'; /docker-entrypoint-initaws.d/localstack-setup.sh"
     networks:
       ls:
         # Set the container IP address in the 10.0.2.0/24 subnet
@@ -34,9 +22,7 @@ services:
       dockerfile: Dockerfile
     container_name: review-collector
     environment:
-      # Set an env var to use later in the code
       AWS_ENDPOINT: http://localstack:4566
-      S3_ENDPOINT: http://localstack:4566
     depends_on:
       - localstack
     ports:
@@ -53,9 +39,7 @@ services:
       dockerfile: Dockerfile
     container_name: review-analyzer
     environment:
-      # Set an env var to use later in the code
       AWS_ENDPOINT: http://localstack:4566
-      S3_ENDPOINT: http://localstack:4566
     depends_on:
       - localstack
     ports:
