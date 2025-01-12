@@ -19,4 +19,4 @@ COPY e2e-tests /app/e2e-tests
 RUN chmod +x /app/gradlew
 
 # Run the tests for the e2e-tests module
-CMD ["./gradlew", ":e2e-tests:test", "--debug"]
+CMD ["./gradlew", ":e2e-tests:test"]
