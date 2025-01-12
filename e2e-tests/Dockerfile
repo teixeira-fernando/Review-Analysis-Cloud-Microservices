@@ -10,7 +10,7 @@ COPY ../gradle gradle
 COPY ../settings.gradle .
 
 # Copy the specific e2e-tests module
-COPY . e2e-tests
+COPY e2e-tests ./e2e-tests
 
 # Ensure Gradle wrapper is executable
 RUN chmod +x ./gradlew
