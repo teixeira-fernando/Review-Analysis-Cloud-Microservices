@@ -1,5 +1,7 @@
 package com.teixeirafernando.review.analyzer;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.Getter;
@@ -16,10 +18,13 @@ public class AnalyzedReview {
     @Getter @Setter private double rating;
     @Getter @Setter private String reviewAnalysis;
 
-    public AnalyzedReview() {
-        this.doReviewAnalysis();
-    }
-    public AnalyzedReview(UUID id, UUID productId, String customerName, String reviewContent, double rating){
+    @JsonCreator
+    public AnalyzedReview(
+            @JsonProperty("id") UUID id,
+            @JsonProperty("productId") UUID productId,
+            @JsonProperty("customerName") String customerName,
+            @JsonProperty("reviewContent") String reviewContent,
+            @JsonProperty("rating") double rating){
         this.id = id;
         this.productId = productId;
         this.customerName = customerName;
