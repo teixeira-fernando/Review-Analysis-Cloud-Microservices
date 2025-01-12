@@ -5,9 +5,6 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
-    env:
-      AWS_ACCESSKEY: ${{ secrets.AWS_ACCESSKEY }}
-      AWS_SECRETKEY: ${{ secrets.AWS_SECRETKEY }}
     permissions:
       contents: read
       packages: write
@@ -28,6 +25,10 @@ jobs:
         uses: docker/setup-buildx-action@v2
       - name: Set up QEMU
         uses: docker/setup-qemu-action@v2
+      - name: Build with Gradle - Review Analyzer
+        run: ./gradlew :review-analyzer:build
+      - name: Build with Gradle - Review Collector
+        run: ./gradlew :review-collector:build
       - name: Run docker-compose - LocalStack setup
         run: docker compose up --build --abort-on-container-exit
       - name: Tear down Docker Compose

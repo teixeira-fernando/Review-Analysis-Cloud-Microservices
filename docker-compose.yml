@@ -29,12 +29,14 @@ services:
 
 
   review-collector:
-    image: teixeirafernando/review-collector
+    build:
+      context: ./review-collector
+      dockerfile: Dockerfile
     container_name: review-collector
     environment:
       # Set an env var to use later in the code
       AWS_ENDPOINT: http://localstack:4566
-      S3_ENDPOINT: http://localhost.localstack.cloud:4566
+      S3_ENDPOINT: http://localstack:4566
     depends_on:
       - localstack
     ports:
@@ -46,12 +48,14 @@ services:
       - ls
 
   review-analyzer:
-    image: teixeirafernando/review-analyzer
+    build:
+      context: ./review-analyzer
+      dockerfile: Dockerfile
     container_name: review-analyzer
     environment:
       # Set an env var to use later in the code
       AWS_ENDPOINT: http://localstack:4566
-      S3_ENDPOINT: http://localhost.localstack.cloud:4566
+      S3_ENDPOINT: http://localstack:4566
     depends_on:
       - localstack
     ports:
@@ -63,7 +67,7 @@ services:
       - ls
 
   e2e-tests:
-    image: teixeirafernando/review-analysis-e2e-tests
+    image: teixeirafernando/review-analysis-e2e-tests:latest
     environment:
       - REVIEW_COLLECTOR_BASE_URL=review-collector
       - REVIEW_ANALYZER_BASE_URL=review-analyzer
