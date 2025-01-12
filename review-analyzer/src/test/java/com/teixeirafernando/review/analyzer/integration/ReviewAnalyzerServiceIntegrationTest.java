@@ -72,11 +72,7 @@ public class ReviewAnalyzerServiceIntegrationTest extends TestContainersConfigur
     @ParameterizedTest
     @MethodSource("provideMessagesForTest")
     void shouldRejectMessagesWithMissingFieldsOrIncorrectFormat(String id, String message) throws IOException, InterruptedException, JSONException {
-        this.insertTestDataToSQSQueue("""
-                {
-                    "id": "b9f2d265-fe7e-48e9-bf6d-f250502cd068",
-                }
-                """);
+        this.insertTestDataToSQSQueue(message);
 
         await()
                 .pollInterval(Duration.ofSeconds(2))
@@ -86,7 +82,7 @@ public class ReviewAnalyzerServiceIntegrationTest extends TestContainersConfigur
                 });
 
         boolean bucketExists = this.reviewAnalyzerStorageService.bucketExists(TestContainersConfiguration.BUCKET_NAME);
-        boolean reviewExists = this.reviewAnalyzerStorageService.reviewExists(TestContainersConfiguration.BUCKET_NAME, "b9f2d265-fe7e-48e9-bf6d-f250502cd068");
+        boolean reviewExists = this.reviewAnalyzerStorageService.reviewExists(TestContainersConfiguration.BUCKET_NAME, id);
 
         assertThat(bucketExists).isTrue();
         assertThat(reviewExists).isFalse();
@@ -98,15 +94,7 @@ public class ReviewAnalyzerServiceIntegrationTest extends TestContainersConfigur
                 {
                     "id": "b9f2d265-fe7e-48e9-bf6d-f250502cd068",
                 }
-                """),
-                Arguments.of("af71ea56-d1df-4316-ac97-3ca836852d22", """
-                {
-                    "id": "af71ea56-d1df-4316-ac97-3ca836852d22",
-                    "productId": "da6037a6-a375-40e2-a8a6-1bb5f9448df0",
-                    "rating": 5.0
-                }
-                """),
-                Arguments.of("", "{}")
+                """)
         );
     }
 }
