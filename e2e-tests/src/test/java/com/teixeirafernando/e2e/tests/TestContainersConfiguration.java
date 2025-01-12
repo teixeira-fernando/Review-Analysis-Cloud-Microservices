@@ -19,7 +19,7 @@ public abstract class TestContainersConfiguration {
 
     @Container
     protected static LocalStackContainer localStack = new LocalStackContainer(
-            DockerImageName.parse("localstack/localstack:latest")
+            DockerImageName.parse("localstack/localstack:4.0.3")
     );
 
     @BeforeAll
