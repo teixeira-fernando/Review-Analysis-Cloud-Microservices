@@ -24,7 +24,7 @@ jobs:
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v2
       - name: Set up QEMU
-        uses: docker/setup-qemu-action@v2
+        uses: docker/setup-qemu-action@v3
       - name: Build without Tests with Gradle - Review Analyzer
         run: ./gradlew :review-analyzer:build -x test
       - name: Build without Tests Gradle - Review Collector
