@@ -77,7 +77,8 @@ You can also run the project using your favorite IDE. As mentioned, you just nee
 ## QA Strategy
 
 * Unit Tests: <b>Junit5 and Mockito</b>
-* Integration tests: <b>Spring Boot Test, TestContainers, Localstack</b> 
+* Integration tests: <b>Spring Boot Test, TestContainers, Localstack</b>
+* E2E tests:  <b>Rest Assured, Localstack</b>
 * Quality Metrics:
     * Mutation Tests/Mutation Coverage: <b>PITest</b>
     * Code Coverage: <b>Jacoco</b>
@@ -87,7 +88,14 @@ You can also run the project using your favorite IDE. As mentioned, you just nee
 
 ## Pipeline configuration
 
-[TODO]
+Even though we are using here a single repository, that is still a micro services project and that's how I tried to organize the CI/CD process to be make every service modular and independent from each other. Let's start having a look on the pipelines that are created for every Pull Request to the main branch:
+
+* review-analyzer-pull-request
+   * This pipeline builds and run the unit and integration tests from review-analyzer service.
+* review-collector-pull-request
+   * This pipeline builds and run the unit and integration tests from review-collector service.
+* e2e-tests-pull-request:
+   * This pipeline runs the E2E tests using the docker-compose configuration from file 'docker-compose.yml'.  
 
 
 ## Development info
