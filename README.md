@@ -10,20 +10,43 @@
 
 ## Stack
 
-* Java 17
+* Java 21
 * Spring Boot
 * Gradle
 * Test Containers
 * Localstack
+* JUnit 5
 * AWS (S3, SQS)
 
 ## Requirements to run it locally
 
-[TODO]
+* Docker
+* Gradle and Java
+* An AWS account if you want to run it using real services (you can run the setup with LocalStack which does not require an AWS Account)
 
 ## Instructions to run the project
 
-[TODO]
+There are different options to run the project:
+
+#### 1 - Docker - using Localstack
+
+You can simply run this docker-compose command to run the 2 services, together with the E2E tests and Localstack:
+
+```Shell
+docker-compose up --abort-on-container-exit
+```
+
+#### 2 - Docker - using real AWS services
+
+For this option, you need to have a created AWS account and set 2 environment variables, AWS_ACCESSKEY and AWS_SECRETKEY. Depending on your machine OS, you will have a different command to set those environment variables. If you using linux, you can simply run the following:
+
+```Shell
+export AWS_ACCESSKEY=YOUR_ACCESSKEY_HERE
+```
+
+```Shell
+export AWS_SECRETKEY=YOUR_SECRETKEY_HERE
+```
 
 ## QA Strategy
 
