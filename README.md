@@ -48,6 +48,32 @@ export AWS_ACCESSKEY=YOUR_ACCESSKEY_HERE
 export AWS_SECRETKEY=YOUR_SECRETKEY_HERE
 ```
 
+Now, we can run this single docker command to run the 2 services and the E2E tests using real AWS services from your account.
+
+```Shell
+docker-compose -f docker-compose-real-AWS-services.yml up --abort-on-container-exit
+```
+
+#### 2 - Using your favorite IDE
+
+You can also run the project using your favorite IDE. As mentioned, you just need the Java JDK and Gradle properly installed and configured on your machine. Let me show you how to easily run the 2 services from the project in that way.
+
+ <b>Run review-collector service:</b>
+```Gradle
+./gradlew :review-collector:bootRun
+```
+
+ <b>Run review-analyzer service:</b>
+```Gradle
+./gradlew :review-analyzer:bootRun
+```
+
+ <b>Run E2E tests:</b>
+
+```Gradle
+./gradlew :e2e-tests:test
+```
+
 ## QA Strategy
 
 * Unit Tests: <b>Junit5 and Mockito</b>
@@ -56,7 +82,7 @@ export AWS_SECRETKEY=YOUR_SECRETKEY_HERE
     * Mutation Tests/Mutation Coverage: <b>PITest</b>
     * Code Coverage: <b>Jacoco</b>
     * Technical Debt, Code Smells and other complementary metrics : <b>Sonar Cloud</b>
-* Contract tests: <b>Pact framework</b>
+* Contract tests: <b>Pact framework</b> (TODO)
 * Continuous Integration: This project uses Github Action for Continuous Integration, where it executes all the tests and Sonar Cloud Analysis for every pull request, making easier the process of integration of every new code, also facilitating the process of Code Review.
 
 ## Pipeline configuration
