@@ -80,8 +80,8 @@ You can also run the project using your favorite IDE. As mentioned, you just nee
 * Integration tests: <b>Spring Boot Test, TestContainers, Localstack</b>
 * E2E tests:  <b>Rest Assured, Localstack</b>
 * Quality Metrics:
-    * Mutation Tests/Mutation Coverage: <b>PITest</b>
-    * Code Coverage: <b>Jacoco</b>
+    * Mutation Tests/Mutation Coverage: <b>PITest</b> (TODO)
+    * Code Coverage: <b>Jacoco</b> (TODO)
     * Technical Debt, Code Smells and other complementary metrics : <b>Sonar Cloud</b>
 * Contract tests: <b>Pact framework</b> (TODO)
 * Continuous Integration: This project uses Github Action for Continuous Integration, where it executes all the tests and Sonar Cloud Analysis for every pull request, making easier the process of integration of every new code, also facilitating the process of Code Review.
@@ -95,8 +95,16 @@ Even though we are using here a single repository, that is still a micro service
 * review-collector-pull-request
    * This pipeline builds and run the unit and integration tests from review-collector service.
 * e2e-tests-pull-request:
-   * This pipeline runs the E2E tests using the docker-compose configuration from file 'docker-compose.yml'.  
+   * This pipeline runs the E2E tests using the docker-compose configuration from file 'docker-compose.yml'.  In that config, we build the Docker images from the 2 services and the E2E tests, so then we can run it with the latest changes coming together with the PR. We also run Localstack together, so then we can have the services and the E2E tests running, without extra costs of AWS services. It would be more efficient to simply run this docker-compose configuration in the release process, but since we want to demonstrate different possibilities with Localstack, including the other configuration using real AWS services, we will use 'docker-compose.yml' here in this pull-request process.
+ 
+ Now, let's look at the pipelines used during the release process. That means after changes are merged into the main branch:
 
+* review-analyzer-release
+   * This pipeline builds the Docker image from the review-analyzer service and pushes it to the Docker registry.
+* review-collector-pull-request
+   * This pipeline builds the Docker image from the review-collector service and pushes it to the Docker registry.
+*  e2e-tests-release:
+   *  This pipeline runs the E2E tests using the docker-compose configuration from file 'docker-compose-real-AWS-services'.  In that config, we use the latest Docker images from the 2 services and the E2E tests that were built on the 2 other release pipelines. We use real AWS services here for that test execution, and that's why we provide the AWS_ACCESSKEY and AWS_SECRETKEY into it. AS mentioned before, I could simply run my other docker-compose configuration that uses LocalStack, but i just wanted to show here the difference between both configurations.
 
 ## Development info
 
