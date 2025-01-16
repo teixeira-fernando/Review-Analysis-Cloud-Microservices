@@ -4,17 +4,17 @@
 ![Coverage](https://img.shields.io/codecov/c/github/teixeira-fernando/Review-Analysis-Cloud-Microservices)
 
 ## Table of Contents
-- [Microservices](##microservices)
-- [Stack](##stack)
-- [Requirements to run it locally](##requirements-to-run-it-locally)
-- [Instructions to run the project](##instructions-to-run-the-project)
-  - [Docker - using Localstack](####docker---using-localstack)
-  - [Docker - using real AWS services](####docker---using-real-aws-services)
-  - [Using your favorite IDE](####using-your-favorite-ide)
-- [QA Strategy](##qa-strategy)
-- [Pipeline Configuration](##pipeline-configuration)
-- [Development Info](##development-info)
-  - [Running E2E tests using Docker alone](###running-e2e-tests-using-docker-alone)
+- [Microservices](#microservices)
+- [Stack](#stack)
+- [Requirements to run it locally](#requirements-to-run-it-locally)
+- [Instructions to run the project](#instructions-to-run-the-project)
+  - [Docker - using Localstack](#docker---using-localstack)
+  - [Docker - using real AWS services](#docker---using-real-aws-services)
+  - [Using your favorite IDE](#using-your-favorite-ide)
+- [QA Strategy](#qa-strategy)
+- [Pipeline Configuration](#pipeline-configuration)
+- [Development Info](#development-info)
+  - [Running E2E tests using Docker alone](#running-e2e-tests-using-docker-alone)
 
 ## Microservices 
 
