@@ -8,9 +8,9 @@
 - [Stack](#stack)
 - [Requirements to run it locally](#requirements-to-run-it-locally)
 - [Instructions to run the project](#instructions-to-run-the-project)
-  - [Docker - using Localstack](#docker---using-localstack)
-  - [Docker - using real AWS services](#docker---using-real-aws-services)
-  - [Using your favorite IDE](#using-your-favorite-ide)
+  - [Docker - using Localstack](#1---docker---using-localstack)
+  - [Docker - using real AWS services](#2---docker---using-real-aws-services)
+  - [Using your favorite IDE](#3---using-your-favorite-ide)
 - [QA Strategy](#qa-strategy)
 - [Pipeline Configuration](#pipeline-configuration)
 - [Development Info](#development-info)
@@ -70,7 +70,7 @@ Now, we can run this single docker command to run the 2 services and the E2E tes
 docker-compose -f docker-compose-real-AWS-services.yml up --abort-on-container-exit
 ```
 
-#### 2 - Using your favorite IDE
+#### 3 - Using your favorite IDE
 
 You can also run the project using your favorite IDE. As mentioned, you just need the Java JDK and Gradle properly installed and configured on your machine. Let me show you how to easily run the 2 services from the project in that way.
 
