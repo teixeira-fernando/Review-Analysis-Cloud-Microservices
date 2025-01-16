@@ -1,28 +1,44 @@
 # Review Analysis Cloud Microservices - Test Containers and Localstack in practice
 
+[![E2E tests - Release Process](https://github.com/teixeira-fernando/Review-Analysis-Cloud-Microservices/actions/workflows/e2e-tests-release.yml/badge.svg)](https://github.com/teixeira-fernando/Review-Analysis-Cloud-Microservices/actions/workflows/e2e-tests-release.yml)
+![Coverage](https://img.shields.io/codecov/c/github/teixeira-fernando/Review-Analysis-Cloud-Microservices)
+
+## Table of Contents
+- [Microservices](##microservices)
+- [Stack](##stack)
+- [Requirements to run it locally](##requirements-to-run-it-locally)
+- [Instructions to run the project](##instructions-to-run-the-project)
+  - [Docker - using Localstack](####docker---using-localstack)
+  - [Docker - using real AWS services](####docker---using-real-aws-services)
+  - [Using your favorite IDE](####using-your-favorite-ide)
+- [QA Strategy](##qa-strategy)
+- [Pipeline Configuration](##pipeline-configuration)
+- [Development Info](##development-info)
+  - [Running E2E tests using Docker alone](###running-e2e-tests-using-docker-alone)
 
 ## Microservices 
 
-* Review Collector
-* Review Analyzer
+- **Review Collector**
+- **Review Analyzer**
 
-![alt text](images/ReviewAnalysisProject.drawio.png "Review Analysis Microservices Flow")
+![Review Analysis Microservices Flow](images/ReviewAnalysisProject.drawio.png)
 
 ## Stack
 
-* Java 21
-* Spring Boot
-* Gradle
-* Test Containers
-* Localstack
-* JUnit 5
-* AWS (S3, SQS)
+- **Java 21**
+- **Spring Boot**
+- **Gradle**
+- **Test Containers**
+- **Localstack**
+- **JUnit 5**
+- **AWS (S3, SQS)**
 
 ## Requirements to run it locally
 
-* Docker
-* Gradle and Java
-* An AWS account if you want to run it using real services (you can run the setup with LocalStack which does not require an AWS Account)
+- **Docker**
+- **Gradle and Java**
+- **An AWS account** (if you want to run it using real services; you can use LocalStack which does not require an AWS Account)
+
 
 ## Instructions to run the project
 
