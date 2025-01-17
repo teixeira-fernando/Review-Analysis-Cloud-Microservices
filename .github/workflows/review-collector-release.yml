@@ -61,7 +61,7 @@ jobs:
 
       - name: Build and push Docker image
         id: push
-        uses: docker/build-push-action@v3
+        uses: docker/build-push-action@v6
         with:
           context: ./review-collector  # Path to the folder where Dockerfile is located
           file: ./review-collector/Dockerfile
