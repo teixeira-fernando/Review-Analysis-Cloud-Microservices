@@ -11,9 +11,7 @@ services:
     volumes:
       - ./localstack-setup.sh:/etc/localstack/init/ready.d/script.sh
     networks:
-      ls:
-        # Set the container IP address in the 10.0.2.0/24 subnet
-        ipv4_address: 10.0.2.20
+      - ls
 
 
   review-collector:
@@ -27,9 +25,6 @@ services:
       - localstack
     ports:
       - "8080:8080"
-    dns:
-      # Set the DNS server to be the LocalStack container
-      - 10.0.2.20
     networks:
       - ls
 
@@ -44,9 +39,6 @@ services:
       - localstack
     ports:
       - "8081:8081"
-    dns:
-      # Set the DNS server to be the LocalStack container
-      - 10.0.2.20
     networks:
       - ls
 
@@ -62,9 +54,6 @@ services:
     depends_on:
       - review-collector
       - review-analyzer
-    dns:
-      # Set the DNS server to be the LocalStack container
-      - 10.0.2.20
     networks:
       - ls
     entrypoint: [ "sh", "-c", "while ! nc -z review-collector 8080; do sleep 1; done; while ! nc -z review-analyzer 8081; do sleep 1; done; ./gradlew :e2e-tests:test" ]
