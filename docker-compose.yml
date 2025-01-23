@@ -60,7 +60,4 @@ services:
 
 networks:
   ls:
-    ipam:
-      config:
-        # Specify the subnet range for IP address allocation
-        - subnet: 10.0.2.0/24
+    driver: bridge
