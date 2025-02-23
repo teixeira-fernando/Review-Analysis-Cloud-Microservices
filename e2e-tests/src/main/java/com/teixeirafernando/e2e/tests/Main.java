@@ -1,4 +1,4 @@
-package java.com.teixeirafernando.e2e.tests;
+package com.teixeirafernando.e2e.tests;
 
 public class Main {
     public static void main(String[] args) {
