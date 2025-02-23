@@ -21,6 +21,7 @@ public class ReviewCollectorService {
             return sqsTemplate.send(queueName, jsonReview);
         }
         catch (Exception ex){
+            System.out.println("Error publishing message to queue: " + ex.getMessage());
             throw ex;
         }
     }
