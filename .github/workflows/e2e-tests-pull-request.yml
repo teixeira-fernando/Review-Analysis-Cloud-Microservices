@@ -62,7 +62,7 @@ jobs:
         run: |
           export IMAGE_TAG_ENV=dev-${{ github.run_number }}
           echo "IMAGE_TAG=$IMAGE_TAG_ENV" >> "$GITHUB_ENV"
-          echo "::set-output name=image_tag::$IMAGE_TAG_ENV"
+          echo "IMAGE_TAG=$IMAGE_TAG_ENV" >> $GITHUB_OUTPUT
 
       - name: Build and push Docker image - Review Collector
         uses: docker/build-push-action@3b5e8027fcad23fda98b2e3ac259d8d67585f671
@@ -70,7 +70,7 @@ jobs:
           context: ./review-collector  # Path to the folder where Dockerfile is located
           file: ./review-collector/Dockerfile
           push: true
-          tags: teixeirafernando/review-collector:$IMAGE_TAG_ENV
+          tags: teixeirafernando/review-collector:${{ image-tag.IMAGE_TAG }}
 
       - name: Build and push Docker image - Review Analyzer
         uses: docker/build-push-action@3b5e8027fcad23fda98b2e3ac259d8d67585f671
@@ -78,7 +78,7 @@ jobs:
           context: ./review-analyzer  # Path to the folder where Dockerfile is located
           file: ./review-analyzer/Dockerfile
           push: true
-          tags: teixeirafernando/review-analyzer:$IMAGE_TAG_ENV
+          tags: teixeirafernando/review-analyzer:${{ image-tag.IMAGE_TAG }}
       - name: Run Test - ReviewAnalysisE2ETestWithEverything
         env:
           REVIEW_COLLECTOR_DOCKER_IMAGE: "$IMAGE_TAG_ENV"
