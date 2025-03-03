@@ -26,6 +26,7 @@ import org.testcontainers.lifecycle.Startables;
 import org.testcontainers.utility.DockerImageName;
 
 import java.io.IOException;
+import java.util.Optional;
 import java.util.UUID;
 
 import static java.util.Objects.requireNonNull;
@@ -44,8 +45,6 @@ public class TestContainerConfigurationWithEverything {
             DockerImageName.parse("localstack/localstack:4.0.3")
     ).withNetwork(SHARED_NETWORK).withNetworkAliases("localstack");
 
-
-
     @BeforeAll
     static void beforeAll() throws IOException, InterruptedException {
         localStack.execInContainer("awslocal", "s3", "mb", "s3://" + BUCKET_NAME);
@@ -56,16 +55,11 @@ public class TestContainerConfigurationWithEverything {
                 "--queue-name",
                 QUEUE_NAME
         );
-        System.out.println("Before All block was executed");
 
-        System.out.println("Initializer block was started");
-
-        ReviewCollectorService = createReviewCollectorServiceContainer();
-        ReviewAnalyzerService = createReviewAnalyzerServiceContainer();
+        ReviewCollectorService = createReviewCollectorServiceContainer(8080);
+        ReviewAnalyzerService = createReviewAnalyzerServiceContainer(8081);
 
         Startables.deepStart(ReviewCollectorService, ReviewAnalyzerService).join();
-        //setPropertiesForConnections(environment);
-        System.out.println("Initializer block was finished");
 
     }
 
@@ -99,24 +93,23 @@ public class TestContainerConfigurationWithEverything {
     }
 
 
-    private static GenericContainer<?> createReviewCollectorServiceContainer() {
-        /*final var reviewCollectorImage = requireNonNull(
-                System.getenv("image.review-collector"),
-                "Review-collector image is null"
-        );*/
-        final var reviewCollectorImage = "teixeirafernando/review-collector:latest";
+    private static GenericContainer<?> createReviewCollectorServiceContainer(int port) {
+        final var reviewCollectorImage = Optional.ofNullable(
+                System.getenv("REVIEW_COLLECTOR_DOCKER_IMAGE"))
+                .orElse("teixeirafernando/review-collector:latest");
+
         return new GenericContainer<>(reviewCollectorImage)
                 .withEnv("AWS_ENDPOINT", "http://localstack:4566")
-                .withExposedPorts(8080)
+                .withExposedPorts(port)
                 .withNetwork(SHARED_NETWORK)
-                .withNetworkAliases("review-analysis")
+                .withNetworkAliases("review-collector-service")
                 .withCreateContainerCmdModifier(
                         cmd -> cmd.withHostConfig(
                                 new HostConfig()
                                         .withNetworkMode(SHARED_NETWORK.getId())
                                         .withPortBindings(new PortBinding(
-                                                Ports.Binding.bindPort(8080),
-                                                new ExposedPort(8080)
+                                                Ports.Binding.bindPort(port),
+                                                new ExposedPort(port)
                                         ))
                         )
                 )
@@ -134,24 +127,23 @@ public class TestContainerConfigurationWithEverything {
                 .withLogConsumer(new Slf4jLogConsumer(LoggerFactory.getLogger("Review-collector-service")));
     }
 
-    private static GenericContainer<?> createReviewAnalyzerServiceContainer() {
-        /*final var reviewAnalyzerImage = requireNonNull(
-                System.getenv("image.review-analyzer"),
-                "Review-analyzer image is null"
-        );*/
-        final var reviewAnalyzerImage = "teixeirafernando/review-analyzer:latest";
+    private static GenericContainer<?> createReviewAnalyzerServiceContainer(int port) {
+        final var reviewAnalyzerImage = Optional.ofNullable(
+                System.getenv("REVIEW_ANALYZER_DOCKER_IMAGE"))
+                .orElse("teixeirafernando/review-analyzer:latest");
+
         return new GenericContainer<>(reviewAnalyzerImage)
                 .withEnv("AWS_ENDPOINT", "http://localstack:4566")
-                .withExposedPorts(8081)
+                .withExposedPorts(port)
                 .withNetwork(SHARED_NETWORK)
-                .withNetworkAliases("review-analysis")
+                .withNetworkAliases("review-analyzer-service")
                 .withCreateContainerCmdModifier(
                         cmd -> cmd.withHostConfig(
                                 new HostConfig()
                                         .withNetworkMode(SHARED_NETWORK.getId())
                                         .withPortBindings(new PortBinding(
-                                                Ports.Binding.bindPort(8081),
-                                                new ExposedPort(8081)
+                                                Ports.Binding.bindPort(port),
+                                                new ExposedPort(port)
                                         ))
                         )
                 )
