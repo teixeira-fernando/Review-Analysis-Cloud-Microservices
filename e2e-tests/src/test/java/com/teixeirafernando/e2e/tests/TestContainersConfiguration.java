@@ -34,7 +34,6 @@ public abstract class TestContainersConfiguration {
         );
     }
 
-    static protected final String SQSUrl = "http://sqs.us-east-1.localhost.localstack.cloud:4566/000000000000";
     static protected final String BUCKET_NAME = UUID.randomUUID().toString();
     static protected final String QUEUE_NAME = UUID.randomUUID().toString();
 
