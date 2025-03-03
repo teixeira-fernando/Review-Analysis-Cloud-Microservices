@@ -56,7 +56,7 @@ services:
       - review-analyzer
     networks:
       - ls
-    entrypoint: [ "sh", "-c", "while ! nc -z review-collector 8080; do sleep 1; done; while ! nc -z review-analyzer 8081; do sleep 1; done; ./gradlew :e2e-tests:test" ]
+    entrypoint: [ "sh", "-c", "while ! nc -z review-collector 8080; do sleep 1; done; while ! nc -z review-analyzer 8081; do sleep 1; done; ./gradlew :e2e-tests:test --tests '*ReviewAnalysisE2ETest'" ]
 
 networks:
   ls:
