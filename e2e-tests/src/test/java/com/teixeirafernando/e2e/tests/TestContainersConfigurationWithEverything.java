@@ -1,5 +1,6 @@
 package com.teixeirafernando.e2e.tests;
 
+//other i
 import com.github.dockerjava.api.model.ExposedPort;
 import com.github.dockerjava.api.model.HostConfig;
 import com.github.dockerjava.api.model.PortBinding;
@@ -22,7 +23,7 @@ import java.io.IOException;
 import java.util.Optional;
 
 @Testcontainers
-public class TestContainerConfigurationWithEverything {
+public class TestContainersConfigurationWithEverything {
 
     private static final Network SHARED_NETWORK = Network.newNetwork();
     protected static GenericContainer<?> ReviewCollectorService;
