@@ -5,14 +5,13 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import java.time.Duration;
-import java.util.Optional;
 
 import static io.restassured.RestAssured.given;
 import static org.awaitility.Awaitility.await;
 import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.notNullValue;
 
-public class ReviewAnalysisE2ETestWithEverything extends TestContainerConfigurationWithEverything{
+public class ReviewAnalysisE2ETestWithEverything extends TestContainersConfigurationWithEverything {
 
     @Test
     @DisplayName("Create a new Review and make the sentiment analysis")
@@ -27,8 +26,8 @@ public class ReviewAnalysisE2ETestWithEverything extends TestContainerConfigurat
                 }
                 """;
 
-        String fullReviewCollectorURL = "http://localhost:8080";
-        String fullReviewAnalyzerURL = "http://localhost:8081";
+        String fullReviewCollectorURL = "http://"+ TestContainersConfigurationWithEverything.ReviewCollectorService.getHost()+":8080";
+        String fullReviewAnalyzerURL = "http://"+ TestContainersConfigurationWithEverything.ReviewAnalyzerService.getHost()+":8081";
 
         String id = given()
                 .contentType("application/json")
