@@ -70,6 +70,16 @@ public class TestContainerConfigurationWithEverything {
                 .withExposedPorts(port)
                 .withNetwork(SHARED_NETWORK)
                 .withNetworkAliases("review-collector-service")
+                .withCreateContainerCmdModifier(
+                        cmd -> cmd.withHostConfig(
+                                new HostConfig()
+                                        .withNetworkMode(SHARED_NETWORK.getId())
+                                        .withPortBindings(new PortBinding(
+                                                Ports.Binding.bindPort(port),
+                                                new ExposedPort(port)
+                                        ))
+                        )
+                )
                 .waitingFor(
                         Wait.forHttp("/actuator/health")
                                 .forStatusCode(200)
@@ -87,6 +97,16 @@ public class TestContainerConfigurationWithEverything {
                 .withExposedPorts(port)
                 .withNetwork(SHARED_NETWORK)
                 .withNetworkAliases("review-analyzer-service")
+                .withCreateContainerCmdModifier(
+                        cmd -> cmd.withHostConfig(
+                                new HostConfig()
+                                        .withNetworkMode(SHARED_NETWORK.getId())
+                                        .withPortBindings(new PortBinding(
+                                                Ports.Binding.bindPort(port),
+                                                new ExposedPort(port)
+                                        ))
+                        )
+                )
                 .waitingFor(
                         Wait.forHttp("/actuator/health")
                                 .forStatusCode(200)
