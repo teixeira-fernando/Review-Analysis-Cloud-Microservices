@@ -27,8 +27,8 @@ public class ReviewAnalysisE2ETestWithEverything extends TestContainerConfigurat
                 }
                 """;
 
-        String fullReviewCollectorURL = "http://localhost:8080";
-        String fullReviewAnalyzerURL = "http://localhost:8081";
+        String fullReviewCollectorURL = "http://"+TestContainerConfigurationWithEverything.ReviewCollectorService.getHost()+":8080";
+        String fullReviewAnalyzerURL = "http://"+TestContainerConfigurationWithEverything.ReviewAnalyzerService.getHost()+":8081";
 
         String id = given()
                 .contentType("application/json")

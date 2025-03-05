@@ -6,11 +6,6 @@ import com.github.dockerjava.api.model.PortBinding;
 import com.github.dockerjava.api.model.Ports;
 import org.junit.jupiter.api.BeforeAll;
 import org.slf4j.LoggerFactory;
-import org.springframework.context.ConfigurableApplicationContext;
-import org.springframework.core.env.ConfigurableEnvironment;
-import org.springframework.core.env.Environment;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.context.ApplicationContextInitializer;
 import org.springframework.test.context.DynamicPropertyRegistry;
 import org.springframework.test.context.DynamicPropertySource;
 import org.testcontainers.containers.GenericContainer;
@@ -18,8 +13,6 @@ import org.testcontainers.containers.Network;
 import org.testcontainers.containers.localstack.LocalStackContainer;
 import org.testcontainers.containers.output.Slf4jLogConsumer;
 import org.testcontainers.containers.wait.strategy.Wait;
-import org.testcontainers.images.AbstractImagePullPolicy;
-import org.testcontainers.images.ImageData;
 import org.testcontainers.junit.jupiter.Container;
 import org.testcontainers.junit.jupiter.Testcontainers;
 import org.testcontainers.lifecycle.Startables;
@@ -27,11 +20,6 @@ import org.testcontainers.utility.DockerImageName;
 
 import java.io.IOException;
 import java.util.Optional;
-import java.util.UUID;
-
-import static java.util.Objects.requireNonNull;
-import static org.testcontainers.containers.localstack.LocalStackContainer.Service.S3;
-import static org.testcontainers.containers.localstack.LocalStackContainer.Service.SQS;
 
 @Testcontainers
 public class TestContainerConfigurationWithEverything {
@@ -39,6 +27,9 @@ public class TestContainerConfigurationWithEverything {
     private static final Network SHARED_NETWORK = Network.newNetwork();
     protected static GenericContainer<?> ReviewCollectorService;
     protected static GenericContainer<?> ReviewAnalyzerService;
+
+    static protected final String BUCKET_NAME = "review-analysis-bucket";
+    static protected final String QUEUE_NAME = "review-analysis-queue";
 
     @Container
     protected static LocalStackContainer localStack = new LocalStackContainer(
@@ -60,36 +51,12 @@ public class TestContainerConfigurationWithEverything {
         ReviewAnalyzerService = createReviewAnalyzerServiceContainer(8081);
 
         Startables.deepStart(ReviewCollectorService, ReviewAnalyzerService).join();
-
     }
-
-    static protected final String BUCKET_NAME = "review-analysis-bucket";
-    static protected final String QUEUE_NAME = "review-analysis-queue";
 
     @DynamicPropertySource
     static void overrideProperties(DynamicPropertyRegistry registry) {
         registry.add("app.bucket", () -> BUCKET_NAME);
         registry.add("app.queue", () -> QUEUE_NAME);
-        registry.add(
-                "spring.cloud.aws.region.static",
-                () -> localStack.getRegion()
-        );
-        registry.add(
-                "spring.cloud.aws.credentials.access-key",
-                () -> localStack.getAccessKey()
-        );
-        registry.add(
-                "spring.cloud.aws.credentials.secret-key",
-                () -> localStack.getSecretKey()
-        );
-        registry.add(
-                "spring.cloud.aws.s3.endpoint",
-                () -> localStack.getEndpointOverride(S3).toString()
-        );
-        registry.add(
-                "spring.cloud.aws.sqs.endpoint",
-                () -> localStack.getEndpointOverride(SQS).toString()
-        );
     }
 
 
@@ -117,13 +84,6 @@ public class TestContainerConfigurationWithEverything {
                         Wait.forHttp("/actuator/health")
                                 .forStatusCode(200)
                 )
-                .withImagePullPolicy(new AbstractImagePullPolicy() {
-                    @Override
-                    protected boolean shouldPullCached(DockerImageName imageName,
-                                                       ImageData localImageData) {
-                        return true;
-                    }
-                })
                 .withLogConsumer(new Slf4jLogConsumer(LoggerFactory.getLogger("Review-collector-service")));
     }
 
@@ -151,13 +111,6 @@ public class TestContainerConfigurationWithEverything {
                         Wait.forHttp("/actuator/health")
                                 .forStatusCode(200)
                 )
-                .withImagePullPolicy(new AbstractImagePullPolicy() {
-                    @Override
-                    protected boolean shouldPullCached(DockerImageName imageName,
-                                                       ImageData localImageData) {
-                        return true;
-                    }
-                })
                 .withLogConsumer(new Slf4jLogConsumer(LoggerFactory.getLogger("Review-analyzer-service")));
     }
 
