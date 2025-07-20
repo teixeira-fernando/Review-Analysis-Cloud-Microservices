@@ -1,0 +1,11 @@
+.container {
+  box-sizing: border-box;
+}
+
+.review-form label {
+  font-weight: bold;
+}
+
+.review-form textarea {
+  min-height: 60px;
+}

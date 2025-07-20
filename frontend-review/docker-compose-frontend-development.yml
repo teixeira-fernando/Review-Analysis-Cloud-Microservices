@@ -1,0 +1,20 @@
+version: '3'
+
+services:
+  review-collector-frontend:
+    image: teixeirafernando/review-collector:latest
+    environment:
+      - AWS_ACCESSKEY=${AWS_ACCESSKEY}
+      - AWS_SECRETKEY=${AWS_SECRETKEY}
+    container_name: review-collector-frontend
+    ports:
+      - "8080:8080"
+
+  review-analyzer-frontend:
+    image: teixeirafernando/review-analyzer:latest
+    environment:
+      - AWS_ACCESSKEY=${AWS_ACCESSKEY}
+      - AWS_SECRETKEY=${AWS_SECRETKEY}
+    container_name: review-analyzer-frontend
+    ports:
+      - "8081:8081"

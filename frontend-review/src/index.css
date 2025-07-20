@@ -1,0 +1,57 @@
+body {
+  font-family: Arial, sans-serif;
+  background: #f7f7f7;
+  margin: 0;
+  padding: 0;
+}
+
+.container {
+  max-width: 400px;
+  margin: 40px auto;
+  background: #fff;
+  padding: 32px;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+}
+
+h2 {
+  text-align: center;
+  margin-bottom: 24px;
+}
+
+.review-form label {
+  display: block;
+  margin-bottom: 16px;
+}
+
+.review-form input,
+.review-form textarea,
+.review-form select {
+  width: 100%;
+  padding: 8px;
+  margin-top: 4px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  box-sizing: border-box;
+}
+
+.review-form button {
+  width: 100%;
+  padding: 10px;
+  background: #007bff;
+  color: #fff;
+  border: none;
+  border-radius: 4px;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+.review-form button:hover {
+  background: #0056b3;
+}
+
+.message {
+  margin-top: 20px;
+  text-align: center;
+  color: #007bff;
+}
