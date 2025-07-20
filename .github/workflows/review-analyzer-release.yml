@@ -71,5 +71,5 @@ jobs:
 
       - name: Tag Docker Image - latest
         run: |
-          docker tag teixeirafernando/review-analyzer:main teixeirafernando/review-analyzer:latest 
-          docker push teixeirafernando/review-analyzer:latest
+          docker tag teixeirafernando/review-analyzer:main teixeirafernando/review-analyzer:release-${{ github.run_number }} 
+          docker push teixeirafernando/review-analyzer:release-${{ github.run_number }}
