@@ -46,6 +46,7 @@ services:
   frontend-review:
     build:
       context: ./frontend-review
+      dockerfile: Dockerfile
     container_name: frontend-review
     ports:
       - "3000:80"
