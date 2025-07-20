@@ -69,7 +69,9 @@ jobs:
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
 
-      - name: Tag Docker Image - latest
+      - name: Tag and push Docker Image - release and latest
         run: |
-          docker tag teixeirafernando/review-analyzer:main teixeirafernando/review-analyzer:release-${{ github.run_number }} 
+          docker tag teixeirafernando/review-analyzer:main teixeirafernando/review-analyzer:release-${{ github.run_number }}
+          docker tag teixeirafernando/review-analyzer:main teixeirafernando/review-analyzer:latest
           docker push teixeirafernando/review-analyzer:release-${{ github.run_number }}
+          docker push teixeirafernando/review-analyzer:latest

@@ -24,8 +24,9 @@ jobs:
         with:
           username: ${{ secrets.DOCKER_USERNAME }}
           password: ${{ secrets.DOCKER_PASSWORD }}
-      - name: Build and push Docker image
+      - name: Build and push Docker images
         run: |
           cd frontend-review
-          docker build -t teixeirafernando/frontend-review:release-${{ github.run_number }} .
+          docker build -t teixeirafernando/frontend-review:release-${{ github.run_number }} -t teixeirafernando/frontend-review:latest .
           docker push teixeirafernando/frontend-review:release-${{ github.run_number }}
+          docker push teixeirafernando/frontend-review:latest
