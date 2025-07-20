@@ -34,7 +34,7 @@ public class ReviewAnalyzerControllerTest {
     void testSuccessfulGETAnalyzedReview() throws Exception {
         // Arrange
         UUID id = UUID.randomUUID();
-        AnalyzedReview review = new AnalyzedReview(id, UUID.randomUUID(),"Customer Name", "that is the content of my review", 5.0);
+        AnalyzedReview review = new AnalyzedReview(id, "Test Product","Customer Name", "that is the content of my review", 5.0);
 
         String bucketName = "test-bucket";
 
@@ -47,7 +47,7 @@ public class ReviewAnalyzerControllerTest {
         mockMvc.perform(get("/api/messages/"+id))
                 .andExpect(status().isOk()) //validate 200 response code
                 .andExpect(jsonPath("$.id").value(review.getId().toString()))
-                .andExpect(jsonPath("$.productId").value(review.getProductId().toString()))
+                .andExpect(jsonPath("$.productName").value(review.getProductName()))
                 .andExpect(jsonPath("$.customerName").value(review.getCustomerName()))
                 .andExpect(jsonPath("$.reviewContent").value(review.getReviewContent()))
                 .andExpect(jsonPath("$.rating").value(review.getRating()))

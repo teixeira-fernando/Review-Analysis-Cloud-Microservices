@@ -53,7 +53,7 @@ public class ReviewAnalyzerMessageListenerServiceTest
         // Arrange
         UUID id = UUID.randomUUID();
         String bucketName = this.properties.bucket();
-        AnalyzedReview review = new AnalyzedReview(id, UUID.randomUUID(),"Customer Name", "that is the content of my review", 5.0);
+        AnalyzedReview review = new AnalyzedReview(id, "Test Product","Customer Name", "that is the content of my review", 5.0);
 
         // Create a message
         Message message = Message.builder().body(review.toString()).build();

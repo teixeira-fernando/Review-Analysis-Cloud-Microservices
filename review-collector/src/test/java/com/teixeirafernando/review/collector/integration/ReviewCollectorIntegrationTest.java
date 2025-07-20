@@ -41,7 +41,7 @@ public class ReviewCollectorIntegrationTest extends TestContainersConfiguration{
 
         // Arrange
         Review review = new Review(
-                UUID.randomUUID(),
+                "Product Name",
                 "Customer Name",
                 "This is a review content",
                 5.0

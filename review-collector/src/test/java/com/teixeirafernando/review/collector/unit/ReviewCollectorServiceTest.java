@@ -31,7 +31,7 @@ class ReviewCollectorServiceTest {
     void testSendAsyncIsCalledWithCorrectArguments() {
         // Arrange
         String queueName = "test-queue";
-        Review review = new Review(UUID.randomUUID(),"Customer Name", "that is the content of my review", 5.0);
+        Review review = new Review("Product Name","Customer Name", "that is the content of my review", 5.0);
 
         // Act
         reviewCollectorService.publish(queueName, review.toString());

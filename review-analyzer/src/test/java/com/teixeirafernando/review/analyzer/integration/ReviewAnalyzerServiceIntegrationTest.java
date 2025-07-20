@@ -41,7 +41,7 @@ public class ReviewAnalyzerServiceIntegrationTest extends TestContainersConfigur
         this.insertTestDataToSQSQueue("""
                 {
                     "id": "e921412f-af4b-4b1f-bec4-734982b2fb9c",
-                    "productId": "da6037a6-a375-40e2-a8a6-1bb5f9448df0",
+                    "productName": "Test Product",
                     "customerName": "test",
                     "reviewContent": "test",
                     "rating": 5.0
