@@ -24,9 +24,18 @@ jobs:
         with:
           username: ${{ secrets.DOCKER_USERNAME }}
           password: ${{ secrets.DOCKER_PASSWORD }}
-      - name: Build and push Docker images
+
+      - name: Build and push Docker image
+        id: push
+        uses: docker/build-push-action@v6
+        with:
+          context: ./frontend-review  # Path to the folder where Dockerfile is located
+          file: ./frontend-review/Dockerfile
+          push: true
+          tags: ${{ steps.meta.outputs.tags }}
+          labels: ${{ steps.meta.outputs.labels }}
+
+      - name: Tag Docker Image - latest
         run: |
-          cd frontend-review
-          docker build -t teixeirafernando/frontend-review:release-${{ github.run_number }} -t teixeirafernando/frontend-review:latest .
-          docker push teixeirafernando/frontend-review:release-${{ github.run_number }}
+          docker tag teixeirafernando/frontend-review:main teixeirafernando/frontend-review:latest 
           docker push teixeirafernando/frontend-review:latest
