@@ -41,12 +41,12 @@ function App() {
   };
 
   return (
-    <div className="container card">
-      <h2 className="title">
+    <div className="container card" data-testid="review-form-container">
+      <h2 className="title" data-testid="form-title">
         <span role="img" aria-label="star" style={{marginRight: '8px'}}>⭐</span>
         Submit a Product Review
       </h2>
-      <form onSubmit={handleSubmit} className="review-form">
+      <form onSubmit={handleSubmit} className="review-form" data-testid="review-form">
         <div className="form-group">
           <label htmlFor="productName">
             <span role="img" aria-label="box">📦</span> Product Name
@@ -59,6 +59,7 @@ function App() {
             onChange={handleChange}
             required
             placeholder="e.g. Wireless Mouse"
+            data-testid="product-name-input"
           />
         </div>
         <div className="form-group">
@@ -73,6 +74,7 @@ function App() {
             onChange={handleChange}
             required
             placeholder="e.g. John Doe"
+            data-testid="customer-name-input"
           />
         </div>
         <div className="form-group">
@@ -86,6 +88,7 @@ function App() {
             onChange={handleChange}
             required
             placeholder="Write your review here..."
+            data-testid="comment-input"
           />
         </div>
         <div className="form-group">
@@ -93,18 +96,18 @@ function App() {
             <span role="img" aria-label="rating">🌟</span> Rating
           </label>
           <div className="rating-select">
-            <select id="rating" name="rating" value={form.rating} onChange={handleChange} required>
+            <select id="rating" name="rating" value={form.rating} onChange={handleChange} required data-testid="rating-select">
               {[1,2,3,4,5].map((num) => (
                 <option key={num} value={num}>{num}</option>
               ))}
             </select>
           </div>
         </div>
-        <button type="submit" className="submit-btn">
+        <button type="submit" className="submit-btn" data-testid="submit-review-btn">
           <span role="img" aria-label="send">🚀</span> Submit Review
         </button>
       </form>
-      {message && <p className="message">{message}</p>}
+      {message && <p className="message" data-testid="form-message">{message}</p>}
     </div>
   );
 }
