@@ -1,3 +1,4 @@
+
 version: '3'
 
 services:
@@ -18,6 +19,12 @@ services:
     container_name: review-analyzer
     ports:
       - "8081:8081"
+
+  frontend-review:
+    image: teixeirafernando/review-analyzer:latest
+    container_name: frontend-review
+    ports:
+      - "3000:80"
 
   e2e-tests:
     image: teixeirafernando/review-analysis-e2e-tests:latest
