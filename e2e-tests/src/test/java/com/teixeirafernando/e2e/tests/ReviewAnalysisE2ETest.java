@@ -20,7 +20,7 @@ public class ReviewAnalysisE2ETest extends TestContainersConfiguration {
 
         String review = """
                 {
-                    "productId": "da6037a6-a375-40e2-a8a6-1bb5f9448df0",
+                    "productName": "Test Product",
                     "customerName": "test",
                     "reviewContent": "test",
                     "rating": 5.0
@@ -49,7 +49,7 @@ public class ReviewAnalysisE2ETest extends TestContainersConfiguration {
                 .then()
                 .assertThat()
                 .statusCode(HttpStatus.SC_OK)
-                .body("productId", equalTo("da6037a6-a375-40e2-a8a6-1bb5f9448df0"))
+                .body("productName", equalTo("Test Product"))
                 .extract()
                 .path("id");
 

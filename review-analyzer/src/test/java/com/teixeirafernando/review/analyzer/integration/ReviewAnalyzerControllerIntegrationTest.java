@@ -41,7 +41,7 @@ public class ReviewAnalyzerControllerIntegrationTest extends TestContainersConfi
 
         //Arrange
         UUID id = UUID.randomUUID();
-        AnalyzedReview analyzedReview = new AnalyzedReview(id,UUID.randomUUID(),"test","test",5.0);
+        AnalyzedReview analyzedReview = new AnalyzedReview(id,"Test Product","test","test",5.0);
 
         this.reviewAnalyzerStorageService.store(TestContainersConfiguration.BUCKET_NAME, id.toString(), analyzedReview);
 

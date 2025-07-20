@@ -26,7 +26,7 @@ class ReviewCollectorServiceIntegrationTest extends TestContainersConfiguration 
 
 	@Test
 	void shouldHandleMessageSuccessfully() {
-		Review review = new Review(UUID.randomUUID(), "Customer Name", "that is the content of my review", 5.0);
+		Review review = new Review("Product Name", "Customer Name", "that is the content of my review", 5.0);
 		reviewCollectorService.publish(properties.queue(), review.toString());
 
 		await()

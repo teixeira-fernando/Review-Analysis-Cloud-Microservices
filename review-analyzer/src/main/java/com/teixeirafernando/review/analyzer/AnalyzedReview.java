@@ -12,7 +12,7 @@ import java.util.UUID;
 public class AnalyzedReview {
 
     @Getter @Setter private UUID id;
-    @Getter @Setter private UUID productId;
+    @Getter @Setter private String productName;
     @Getter @Setter private String customerName;
     @Getter @Setter private String reviewContent;
     @Getter @Setter private double rating;
@@ -21,12 +21,12 @@ public class AnalyzedReview {
     @JsonCreator
     public AnalyzedReview(
             @JsonProperty("id") UUID id,
-            @JsonProperty("productId") UUID productId,
+            @JsonProperty("productName") String productName,
             @JsonProperty("customerName") String customerName,
             @JsonProperty("reviewContent") String reviewContent,
             @JsonProperty("rating") double rating){
         this.id = id;
-        this.productId = productId;
+        this.productName = productName;
         this.customerName = customerName;
         this.reviewContent = reviewContent;
         this.rating = rating;

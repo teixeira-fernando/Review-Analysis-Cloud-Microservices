@@ -35,7 +35,7 @@ class ReviewCollectorControllerTest {
     void testSuccessfulNewReview() throws Exception {
         // Arrange
         Review review = new Review(
-                UUID.randomUUID(),
+                "Test Product",
                 "Customer Name",
                 "This is a review content",
                 5.0
@@ -51,7 +51,7 @@ class ReviewCollectorControllerTest {
                         .content(String.valueOf(review)))
                 .andExpect(status().isOk()) //validate 200 response code
                 .andExpect(jsonPath("$.id").value(review.getId().toString()))
-                .andExpect(jsonPath("$.productId").value(review.getProductId().toString()))
+                .andExpect(jsonPath("$.productName").value(review.getProductName()))
                 .andExpect(jsonPath("$.customerName").value(review.getCustomerName()))
                 .andExpect(jsonPath("$.reviewContent").value(review.getReviewContent()))
                 .andExpect(jsonPath("$.rating").value(review.getRating()));

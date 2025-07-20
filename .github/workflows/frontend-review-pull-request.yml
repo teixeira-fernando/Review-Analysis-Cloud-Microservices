@@ -1,6 +1,8 @@
 name: Frontend Review - Pull Request
 on:
   pull_request:
+    paths:
+      - 'frontend-review/**'
     branches: ["main"]
 jobs:
   build-frontend:

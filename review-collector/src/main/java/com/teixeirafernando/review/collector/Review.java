@@ -10,14 +10,14 @@ import lombok.Setter;
 public class Review {
 
     @Getter final private UUID id;
-    @Getter @Setter private UUID productId;
+    @Getter @Setter private String productName;
     @Getter @Setter private String customerName;
     @Getter @Setter private String reviewContent;
     @Getter @Setter private double rating;
 
-    public Review(UUID productId, String customerName, String reviewContent, double rating){
+    public Review(String productName, String customerName, String reviewContent, double rating){
         this.id = UUID.randomUUID();
-        this.productId = productId;
+        this.productName = productName;
         this.customerName = customerName;
         this.reviewContent = reviewContent;
         this.rating = rating;
