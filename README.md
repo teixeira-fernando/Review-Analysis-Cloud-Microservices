@@ -18,12 +18,15 @@
 
 ## Microservices 
 
+
 - **Review Collector**
 - **Review Analyzer**
+- **Frontend Review** (React + Vite): A web interface for submitting product reviews, connected to the backend microservices.
 
 ![Review Analysis Microservices Flow](images/ReviewAnalysisProject.drawio.png)
 
 ## Stack
+
 
 - **Java 21**
 - **Spring Boot**
@@ -32,6 +35,9 @@
 - **Localstack**
 - **JUnit 5**
 - **AWS (S3, SQS)**
+- **React** (Frontend)
+- **Vite** (Frontend tooling)
+- **Nginx** (Frontend container)
 
 ## Requirements to run it locally
 
@@ -42,15 +48,19 @@
 
 ## Instructions to run the project
 
-There are different options to run the project:
+
+There are different options to run the project. The frontend module is included and can be run together with the backend services using Docker Compose.
 
 #### 1 - Docker - using Localstack
 
-You can simply run this docker-compose command to run the 2 services, together with the E2E tests and Localstack:
+
+You can simply run this docker-compose command to run the backend services, the frontend module, E2E tests, and Localstack:
 
 ```Shell
-docker-compose up --abort-on-container-exit
+docker-compose up
 ```
+
+The frontend will be available at [http://localhost:3000](http://localhost:3000).
 
 #### 2 - Docker - using real AWS services
 
@@ -64,11 +74,14 @@ export AWS_ACCESSKEY=YOUR_ACCESSKEY_HERE
 export AWS_SECRETKEY=YOUR_SECRETKEY_HERE
 ```
 
-Now, we can run this single docker command to run the 2 services and the E2E tests using real AWS services from your account.
+
+Now, we can run this single docker command to run the backend services, the frontend module, and the E2E tests using real AWS services from your account.
 
 ```Shell
 docker-compose -f docker-compose-real-AWS-services.yml up --abort-on-container-exit
 ```
+
+The frontend will be available at [http://localhost:3000](http://localhost:3000).
 
 #### 3 - Using your favorite IDE
 
@@ -133,6 +146,19 @@ After changes are merged into the main branch, the following pipelines are used:
 Note: While it would be more efficient to run the `docker-compose.yml` configuration during the release process, this project demonstrates different possibilities with LocalStack and real AWS services.
 
 ## Development info
+
+
+### Frontend Review Module
+
+The `frontend-review` module is a React application for submitting product reviews. It is containerized with Docker and served via Nginx. You can run it together with the backend services using Docker Compose as described above. For local development, you can also run:
+
+```Shell
+cd frontend-review
+npm install
+npm run dev
+```
+
+Then visit [http://localhost:5173](http://localhost:5173).
 
 ### Running E2E tests using Docker alone
 
