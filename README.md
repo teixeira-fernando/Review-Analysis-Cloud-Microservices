@@ -57,7 +57,7 @@ There are different options to run the project. The frontend module is included 
 You can simply run this docker-compose command to run the backend services, the frontend module, E2E tests, and Localstack:
 
 ```Shell
-docker-compose up
+docker compose up
 ```
 
 The frontend will be available at [http://localhost:3000](http://localhost:3000).
@@ -78,7 +78,7 @@ export AWS_SECRETKEY=YOUR_SECRETKEY_HERE
 Now, we can run this single docker command to run the backend services, the frontend module, and the E2E tests using real AWS services from your account.
 
 ```Shell
-docker-compose -f docker-compose-real-AWS-services.yml up --abort-on-container-exit
+docker compose -f docker-compose-real-AWS-services.yml up
 ```
 
 The frontend will be available at [http://localhost:3000](http://localhost:3000).
