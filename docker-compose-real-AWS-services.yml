@@ -21,7 +21,7 @@ services:
       - "8081:8081"
 
   frontend-review:
-    image: teixeirafernando/review-analyzer:latest
+    image: teixeirafernando/frontend-review:latest
     container_name: frontend-review
     ports:
       - "3000:80"
