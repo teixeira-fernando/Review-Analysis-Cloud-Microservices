@@ -1,0 +1,32 @@
+
+body {
+  font-family: 'Inter', Arial, sans-serif;
+  background: linear-gradient(120deg, #e0eaff 0%, #f7f7f7 100%);
+  margin: 0;
+  padding: 0;
+  min-height: 100vh;
+}
+
+
+/* .container styles moved to App.css for card layout */
+
+
+/* h2 styles moved to App.css for title */
+
+
+/* label styles moved to App.css for form-group */
+
+
+/* input, textarea, select styles moved to App.css */
+
+
+/* button styles moved to App.css for .submit-btn */
+
+
+.message {
+  margin-top: 24px;
+  text-align: center;
+  color: #007bff;
+  font-size: 1.1rem;
+  font-weight: 500;
+}
