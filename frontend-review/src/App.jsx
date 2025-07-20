@@ -41,47 +41,68 @@ function App() {
   };
 
   return (
-    <div className="container">
-      <h2>Submit a Product Review</h2>
+    <div className="container card">
+      <h2 className="title">
+        <span role="img" aria-label="star" style={{marginRight: '8px'}}>⭐</span>
+        Submit a Product Review
+      </h2>
       <form onSubmit={handleSubmit} className="review-form">
-        <label>
-          Product Name:
+        <div className="form-group">
+          <label htmlFor="productName">
+            <span role="img" aria-label="box">📦</span> Product Name
+          </label>
           <input
             type="text"
+            id="productName"
             name="productName"
             value={form.productName}
             onChange={handleChange}
             required
+            placeholder="e.g. Wireless Mouse"
           />
-        </label>
-        <label>
-          Customer Name:
+        </div>
+        <div className="form-group">
+          <label htmlFor="customerName">
+            <span role="img" aria-label="user">👤</span> Customer Name
+          </label>
           <input
             type="text"
+            id="customerName"
             name="customerName"
             value={form.customerName}
             onChange={handleChange}
             required
+            placeholder="e.g. John Doe"
           />
-        </label>
-        <label>
-          Comment:
+        </div>
+        <div className="form-group">
+          <label htmlFor="reviewContent">
+            <span role="img" aria-label="comment">💬</span> Comment
+          </label>
           <textarea
+            id="reviewContent"
             name="reviewContent"
             value={form.reviewContent}
             onChange={handleChange}
             required
+            placeholder="Write your review here..."
           />
-        </label>
-        <label>
-          Rating:
-          <select name="rating" value={form.rating} onChange={handleChange} required>
-            {[1,2,3,4,5].map((num) => (
-              <option key={num} value={num}>{num}</option>
-            ))}
-          </select>
-        </label>
-        <button type="submit">Submit Review</button>
+        </div>
+        <div className="form-group">
+          <label htmlFor="rating">
+            <span role="img" aria-label="rating">🌟</span> Rating
+          </label>
+          <div className="rating-select">
+            <select id="rating" name="rating" value={form.rating} onChange={handleChange} required>
+              {[1,2,3,4,5].map((num) => (
+                <option key={num} value={num}>{num}</option>
+              ))}
+            </select>
+          </div>
+        </div>
+        <button type="submit" className="submit-btn">
+          <span role="img" aria-label="send">🚀</span> Submit Review
+        </button>
       </form>
       {message && <p className="message">{message}</p>}
     </div>
