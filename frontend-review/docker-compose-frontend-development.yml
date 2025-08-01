@@ -1,20 +1,43 @@
 version: '3'
 
 services:
+  localstack: # LocalStack container
+    image: localstack/localstack:4.0.3
+    ports:
+      # Now only required if you need to access LocalStack from the host
+      - "127.0.0.1:4566:4566"
+      # Now only required if you need to access LocalStack from the host
+      - "127.0.0.1:4510-4559:4510-4559"
+    volumes:
+      - ./localstack-setup.sh:/etc/localstack/init/ready.d/script.sh
+    networks:
+      - ls
+
+
   review-collector:
     image: teixeirafernando/review-collector:latest
-    environment:
-      - AWS_ACCESSKEY=${AWS_ACCESSKEY}
-      - AWS_SECRETKEY=${AWS_SECRETKEY}
     container_name: review-collector
+    environment:
+      AWS_ENDPOINT: http://localstack:4566
+    depends_on:
+      - localstack
     ports:
       - "8080:8080"
+    networks:
+      - ls
 
   review-analyzer:
     image: teixeirafernando/review-analyzer:latest
-    environment:
-      - AWS_ACCESSKEY=${AWS_ACCESSKEY}
-      - AWS_SECRETKEY=${AWS_SECRETKEY}
     container_name: review-analyzer
+    environment:
+      AWS_ENDPOINT: http://localstack:4566
+    depends_on:
+      - localstack
     ports:
       - "8081:8081"
+    networks:
+      - ls
+
+networks:
+  ls:
+    driver: bridge
