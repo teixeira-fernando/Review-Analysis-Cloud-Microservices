@@ -35,3 +35,9 @@ out/
 
 ### VS Code ###
 .vscode/
+
+### UI Frontend ###
+frontend-review/node_modules/
+frontend-review/dist/
+frontend-review/.env
+frontend-review/test-results/
