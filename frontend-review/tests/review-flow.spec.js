@@ -34,4 +34,7 @@ test('submit review and verify backend analysis', async ({ page, request }) => {
   expect(analysisResponse.ok()).toBeTruthy();
   const analysisData = await analysisResponse.json();
   expect(analysisData.reviewAnalysis).toBeDefined();
+  expect(analysisData).toHaveProperty('id');
+  expect(analysisData.id).toBe(reviewId);
+  expect(analysisData).toHaveProperty('productName');
 });
