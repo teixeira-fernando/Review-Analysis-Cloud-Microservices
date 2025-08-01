@@ -9,7 +9,7 @@ services:
       # Now only required if you need to access LocalStack from the host
       - "127.0.0.1:4510-4559:4510-4559"
     volumes:
-      - ./localstack-setup.sh:/etc/localstack/init/ready.d/script.sh
+      - ../localstack-setup.sh:/etc/localstack/init/ready.d/script.sh
     networks:
       - ls
 
