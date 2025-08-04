@@ -5,6 +5,8 @@ module.exports = defineConfig({
   testDir: './tests',
   timeout: 60000,
   retries: 0,
+  globalSetup: require.resolve('./tests/global-setup.js'),
+  globalTeardown: require.resolve('./tests/global-teardown.js'),
   use: {
     baseURL: 'http://localhost:5173',
     headless: true,
