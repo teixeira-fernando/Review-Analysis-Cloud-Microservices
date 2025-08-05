@@ -42,6 +42,7 @@
 ## Requirements to run it locally
 
 - **Docker**
+- **Node**
 - **Gradle and Java**
 - **An AWS account** (if you want to run it using real services; you can use LocalStack which does not require an AWS Account)
 
@@ -107,7 +108,7 @@ You can also run the project using your favorite IDE. As mentioned, you just nee
 
 * Unit Tests: <b>Junit5 and Mockito</b>
 * Integration tests: <b>Spring Boot Test, TestContainers, Localstack</b>
-* E2E tests:  <b>Rest Assured, Localstack</b>
+* E2E tests:  <b>Playwright, Rest Assured, Localstack</b>
 * Quality Metrics:
     * Mutation Tests/Mutation Coverage: <b>PITest</b> (TODO)
     * Code Coverage: <b>Jacoco</b> (TODO)
@@ -125,6 +126,8 @@ Even though this project is using a single repository, it is still a microservic
   * Builds and runs the unit and integration tests for the `review-analyzer` service.
 * **review-collector-pull-request**
   * Builds and runs the unit and integration tests for the `review-collector` service.
+* **frontend-review-pull-request**
+  * Builds and runs the unit, integration and e2e tests for the `frontend-review` frontend.
 * **e2e-tests-pull-request**
   * Runs the E2E tests using the `docker-compose.yml` configuration.
   * Builds Docker images for both services and the E2E tests, running them with the latest changes from the PR.
@@ -138,6 +141,8 @@ After changes are merged into the main branch, the following pipelines are used:
   * Builds the Docker image for the `review-analyzer` service and pushes it to the Docker registry.
 * **review-collector-release**
   * Builds the Docker image for the `review-collector` service and pushes it to the Docker registry.
+* **frontend-review-release**
+  * Builds the Docker image for the `frontend-review` frontend and pushes it to the Docker registry.
 * **e2e-tests-release**
   * Runs the E2E tests using the `docker-compose-real-AWS-services.yml` configuration.
   * Uses the latest Docker images for both services and the E2E tests built in the release pipelines.
@@ -158,7 +163,7 @@ npm install
 npm run dev
 ```
 
-Then visit [http://localhost:5173](http://localhost:5173).
+Then visit [http://localhost:3000](http://localhost:3000).
 
 ### Running E2E tests using Docker alone
 
