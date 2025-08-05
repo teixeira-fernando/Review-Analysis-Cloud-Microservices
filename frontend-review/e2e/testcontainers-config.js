@@ -19,6 +19,8 @@ async function setupContainers() {
 
   testContainersRuntime = await dockerComposeEnvironment.up();
 
+  await sleep(5000); // Wait for services to stabilize
+
   console.log('Containers started successfully.');
   const containers = await containerRuntimeClient.container.list();
 
@@ -29,9 +31,10 @@ async function setupContainers() {
     status: c.Status
   })));
 
+  await sleep(5000); // Wait for services to stabilize
 
-  testContainersRuntime.getContainer('localstack').exec(['awslocal', 's3', 'mb', 's3://review-analysis-bucket']);
-  testContainersRuntime.getContainer('localstack').exec(['awslocal', 'sqs', 'create-queue', '--queue-name', 'review-analysis-queue']);
+   testContainersRuntime.getContainer('localstack').exec(['awslocal', 's3', 'mb', 's3://review-analysis-bucket']);
+   testContainersRuntime.getContainer('localstack').exec(['awslocal', 'sqs', 'create-queue', '--queue-name', 'review-analysis-queue']);
 
   return testContainersRuntime;
 }
