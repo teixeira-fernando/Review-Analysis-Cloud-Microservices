@@ -1,7 +1,7 @@
 // @ts-check
 const { defineConfig, devices } = require('@playwright/test');
 
-const baseURL = process.env.BASE_URL || 'http://localhost:5173';
+const baseURL = process.env.BASE_URL || 'http://localhost:3000';
 
 module.exports = defineConfig({
   testDir: './tests',
