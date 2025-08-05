@@ -8,5 +8,5 @@ module.exports = {
   moduleNameMapper: {
     '\\.(css|less|scss|sass)$': 'identity-obj-proxy',
   },
-  testPathIgnorePatterns: ['/playwright-tests/'],
+  testPathIgnorePatterns: ['/e2e/'],
 };
