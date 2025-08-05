@@ -5,5 +5,4 @@ const path = require('path');
 module.exports = async () => {
   console.log('Starting global setup...');
   const containers = await setupContainers();
-  console.log('Containers started:', containers.ports);
 };
