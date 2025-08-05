@@ -1,4 +1,4 @@
-const { teardownContainers } = require('./testcontainers-with-everything');
+const { teardownContainers } = require('./testcontainers-config');
 
 module.exports = async () => {
   console.log('Starting global teardown...');

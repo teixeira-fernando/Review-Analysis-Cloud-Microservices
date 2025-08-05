@@ -1,6 +1,5 @@
 const { test, expect } = require('@playwright/test');
 
-console.log('Playwright test file loaded');
 // E2E test: submit a review through the UI and verify backend response
 
 test('submit review and verify backend analysis', async ({ page, request }) => {

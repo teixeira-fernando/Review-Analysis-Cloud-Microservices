@@ -3,9 +3,10 @@ module.exports = {
   setupFilesAfterEnv: ['@testing-library/jest-dom'],
   moduleFileExtensions: ['js', 'jsx'],
   transform: {
-    '^.+\\.[jt]sx?$': 'babel-jest',
+    '^.+\.[jt]sx?$': 'babel-jest',
   },
   moduleNameMapper: {
     '\\.(css|less|scss|sass)$': 'identity-obj-proxy',
   },
+  testPathIgnorePatterns: ['/e2e/'],
 };
