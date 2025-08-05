@@ -17,10 +17,6 @@ jobs:
         run: |
           cd frontend-review
           npm ci
-      - name: Lint
-        run: |
-          cd frontend-review
-          npm run lint || true
       - name: Build
         run: |
           cd frontend-review
@@ -28,11 +24,11 @@ jobs:
       - name: Test - unit tests
         run: |
           cd frontend-review
-          npm test || true
+          npm test
       - name: Test - e2e tests
         run: |
           cd frontend-review
-          npm run e2e || true
+          npm run test:e2e 
       - name: Build Docker image
         run: |
           cd frontend-review
