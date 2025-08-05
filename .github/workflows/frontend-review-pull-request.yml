@@ -11,10 +11,10 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: '20'
-      - name: Set up Docker 28.1
-        uses: docker/setup-docker@v3
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
         with:
-          version: '28.1'
+          platforms: linux/amd64
       - name: Install dependencies
         run: |
           cd frontend-review
@@ -34,4 +34,4 @@ jobs:
       - name: Build Docker image
         run: |
           cd frontend-review
-          docker build -t teixeirafernando/frontend-review:pr-${{ github.run_number }} .
+          docker buildx build --load -t teixeirafernando/frontend-review:pr-${{ github.run_number }} .
