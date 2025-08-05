@@ -25,10 +25,14 @@ jobs:
         run: |
           cd frontend-review
           npm run build
-      - name: Test
+      - name: Test - unit tests
         run: |
           cd frontend-review
           npm test || true
+      - name: Test - e2e tests
+        run: |
+          cd frontend-review
+          npm run e2e || true
       - name: Build Docker image
         run: |
           cd frontend-review
