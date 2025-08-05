@@ -4,11 +4,11 @@ const { defineConfig, devices } = require('@playwright/test');
 const baseURL = process.env.BASE_URL || 'http://localhost:3000';
 
 module.exports = defineConfig({
-  testDir: './tests',
+  testDir: './e2e/tests',
   timeout: 60000,
   retries: 0,
-  globalSetup: require.resolve('./tests/global-setup.js'),
-  globalTeardown: require.resolve('./tests/global-teardown.js'),
+  globalSetup: require.resolve('./e2e/global-setup.js'),
+  globalTeardown: require.resolve('./e2e/global-teardown.js'),
   use: {
     baseURL,
     headless: true,
