@@ -5,7 +5,7 @@ services:
     image: localstack/localstack:4.0.3
     container_name: localstack
     ports:
-      - "127.0.0.1:4566:4566"
+      - "4566:4566"
     volumes:
       - ../localstack-setup.sh:/etc/localstack/init/ready.d/script.sh
     networks:
