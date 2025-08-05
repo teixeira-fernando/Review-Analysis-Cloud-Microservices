@@ -3,11 +3,9 @@ version: '3'
 services:
   localstack: # LocalStack container
     image: localstack/localstack:4.0.3
+    container_name: localstack
     ports:
-      # Now only required if you need to access LocalStack from the host
       - "127.0.0.1:4566:4566"
-      # Now only required if you need to access LocalStack from the host
-      - "127.0.0.1:4510-4559:4510-4559"
     volumes:
       - ../localstack-setup.sh:/etc/localstack/init/ready.d/script.sh
     networks:
@@ -35,6 +33,16 @@ services:
       - localstack
     ports:
       - "8081:8081"
+    networks:
+      - ls
+
+  frontend-review:
+    image: teixeirafernando/frontend-review:latest
+    container_name: frontend-review
+    depends_on:
+      - localstack
+    ports:
+      - "3000:80"
     networks:
       - ls
 
