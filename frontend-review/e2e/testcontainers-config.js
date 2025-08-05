@@ -9,15 +9,16 @@ async function setupContainers() {
 
   let dockerComposeEnvironment = new DockerComposeEnvironment(
       path.dirname(composeFile),
-      path.basename(composeFile),
+      path.basename(composeFile)
     )
       .withWaitStrategy('review-collector', Wait.forHttp('/actuator/health').forStatusCode(200))
       .withWaitStrategy('review-analyzer', Wait.forHttp('/actuator/health').forStatusCode(200));
 
 
-  testContainersRuntime = await containerRuntimeClient.compose.up({
-    environment: dockerComposeEnvironment
-  });
+      dockerComposeEnvironment.up();
+  // testContainersRuntime = await containerRuntimeClient.compose.up({
+  //   environment: dockerComposeEnvironment
+  // });
 
   console.log('Containers started successfully.');
   const containers = await containerRuntimeClient.container.list();
