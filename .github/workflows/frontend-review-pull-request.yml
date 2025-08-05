@@ -15,6 +15,10 @@ jobs:
           node-version: '20'
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
+      - name: Set up Docker Compose
+        uses: docker/setup-compose-action@v1
+        with:
+          version: latest
       - name: Install dependencies
         run: |
           cd frontend-review
