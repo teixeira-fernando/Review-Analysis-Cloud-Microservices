@@ -1,6 +1,6 @@
 const path = require('path');
 const { default: test } = require('playwright/test');
-const { DockerComposeEnvironment, Wait, getContainerRuntimeClient } = require('testcontainers');
+const { DockerComposeEnvironment, Wait, getContainerRuntimeClient, PullPolicy } = require('testcontainers');
 
 const composeFile = path.resolve(__dirname, '../docker-compose-frontend-development.yml');
 let testContainersRuntime;
@@ -12,7 +12,7 @@ async function setupContainers() {
       path.dirname(composeFile),
       path.basename(composeFile)
     )
-      .withPullPolicy(PullPolicy.alwaysPull)
+      .withPullPolicy(PullPolicy.alwaysPull())
       .withWaitStrategy('localstack', Wait.forLogMessage('Ready'))
       .withWaitStrategy('review-collector', Wait.forLogMessage('Started ReviewCollectorApplication'))
       .withWaitStrategy('review-analyzer', Wait.forLogMessage('Started ReviewAnalyzerApplication'));
