@@ -12,14 +12,13 @@ async function setupContainers() {
       path.dirname(composeFile),
       path.basename(composeFile)
     )
+      .withPullPolicy(PullPolicy.alwaysPull)
       .withWaitStrategy('localstack', Wait.forLogMessage('Ready'))
       .withWaitStrategy('review-collector', Wait.forLogMessage('Started ReviewCollectorApplication'))
       .withWaitStrategy('review-analyzer', Wait.forLogMessage('Started ReviewAnalyzerApplication'));
 
 
   testContainersRuntime = await dockerComposeEnvironment.up();
-
-  await sleep(5000); // Wait for services to stabilize
 
   console.log('Containers started successfully.');
   const containers = await containerRuntimeClient.container.list();
@@ -30,8 +29,6 @@ async function setupContainers() {
     image: c.Image,
     status: c.Status
   })));
-
-  await sleep(5000); // Wait for services to stabilize
 
    testContainersRuntime.getContainer('localstack').exec(['awslocal', 's3', 'mb', 's3://review-analysis-bucket']);
    testContainersRuntime.getContainer('localstack').exec(['awslocal', 'sqs', 'create-queue', '--queue-name', 'review-analysis-queue']);
