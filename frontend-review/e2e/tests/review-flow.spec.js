@@ -28,22 +28,17 @@ test('submit review and verify backend analysis', async ({ page, request }) => {
   reviewId = reviewResponse.id;
   expect(reviewId).toBeTruthy();
 
-  // Poll the backend for analysis result using the captured id with retry mechanism
-  const maxRetries = 5;
-  const retryDelayMs = 3000;
-  let analysisResponse;
-  for (let attempt = 1; attempt <= maxRetries; attempt++) {
-    analysisResponse = await request.get(`http://localhost:8081/api/messages/${reviewId}`);
-    if (analysisResponse.status() === 200) {
-      break;
-    }
-    if (attempt < maxRetries) {
-      await new Promise(res => setTimeout(res, retryDelayMs));
-    }
-  }
-  expect(analysisResponse && analysisResponse.status()).toBe(200);
-  const analysisData = await analysisResponse.json();
-  expect(analysisData.reviewAnalysis).toBeDefined();
+  // Poll the backend for analysis result using Playwright's expect.poll
+  const analysisData = await expect.poll(async () => {
+    const response = await request.get(`http://localhost:8081/api/messages/${reviewId}`);
+    if (response.status() !== 200) return undefined;
+    return await response.json();
+  }, {
+    timeout: 15000, // total time to wait (15s)
+    intervals: [3000] // poll every 3s
+  }).toHaveProperty('id');
+
+  expect(analysisData).toBeDefined();
   expect(analysisData).toHaveProperty('id');
   expect(analysisData.id).toBe(reviewId);
   expect(analysisData).toHaveProperty('productName');
