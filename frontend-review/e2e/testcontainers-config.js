@@ -11,7 +11,6 @@ async function setupContainers() {
       path.dirname(composeFile),
       path.basename(composeFile)
     )
-      .withPullPolicy(PullPolicy.alwaysPull())
       .withWaitStrategy('localstack', Wait.forLogMessage('Ready'))
       .withWaitStrategy('review-collector', Wait.forHttp("/actuator/health", 8080).forStatusCode(200))
       .withWaitStrategy('review-analyzer', Wait.forHttp("/actuator/health", 8081).forStatusCode(200));
