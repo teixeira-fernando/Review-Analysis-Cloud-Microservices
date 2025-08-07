@@ -23,7 +23,7 @@ function App() {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-          productId: form.productName, // Backend expects UUID, but using name for demo
+          productName: form.productName,
           customerName: form.customerName,
           reviewContent: form.reviewContent,
           rating: Number(form.rating),
