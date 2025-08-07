@@ -23,13 +23,17 @@ test('submit review and verify backend analysis', async ({ page, request }) => {
   // Wait for success message
   await expect(page.getByTestId('form-message')).toHaveText(/Review submitted successfully!/i);
 
-  // Extract the id from the response JSON
+  // Verify the response status and content for the review submission
+  expect(createReviewResponse.status()).toBe(200);
   const reviewResponse = await createReviewResponse.json();
+  expect(reviewResponse).toBeDefined();
+  expect(reviewResponse).toHaveProperty('id');
+
+  // Extract the id from the response JSON
   reviewId = reviewResponse.id;
-  expect(reviewId).toBeTruthy();
 
 
-  // Poll the backend for analysis result using Playwright's expect with retry mechanism
+  // Get from S3 Bucket the created review using Playwright's expect with retry mechanism
   await expect(async () => {
     const S3response = await request.get(`http://localhost:8081/api/messages/${reviewId}`);
     expect(S3response.status()).toBe(200);
