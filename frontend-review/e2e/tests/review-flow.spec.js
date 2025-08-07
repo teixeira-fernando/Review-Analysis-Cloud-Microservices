@@ -28,10 +28,20 @@ test('submit review and verify backend analysis', async ({ page, request }) => {
   reviewId = reviewResponse.id;
   expect(reviewId).toBeTruthy();
 
-  // Poll the backend for analysis result using the captured id
-  // (replace port if needed, or use config)
-  const analysisResponse = await request.get(`http://localhost:8081/api/messages/${reviewId}`);
-  expect(analysisResponse.ok()).toBeTruthy();
+  // Poll the backend for analysis result using the captured id with retry mechanism
+  const maxRetries = 5;
+  const retryDelayMs = 3000;
+  let analysisResponse;
+  for (let attempt = 1; attempt <= maxRetries; attempt++) {
+    analysisResponse = await request.get(`http://localhost:8081/api/messages/${reviewId}`);
+    if (analysisResponse.status() === 200) {
+      break;
+    }
+    if (attempt < maxRetries) {
+      await new Promise(res => setTimeout(res, retryDelayMs));
+    }
+  }
+  expect(analysisResponse && analysisResponse.status()).toBe(200);
   const analysisData = await analysisResponse.json();
   expect(analysisData.reviewAnalysis).toBeDefined();
   expect(analysisData).toHaveProperty('id');
