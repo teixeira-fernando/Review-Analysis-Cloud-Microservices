@@ -27,7 +27,9 @@ async function setupContainers() {
 }
 
 async function teardownContainers() {
-  if (testContainersRuntime) await testContainersRuntime.stop();
+  if (testContainersRuntime) {
+    await testContainersRuntime.down();
+  }
 }
 
 
