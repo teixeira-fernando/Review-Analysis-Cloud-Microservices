@@ -20,7 +20,7 @@
     "@playwright/test": "^1.54.1",
     "@testcontainers/localstack": "^11.4.0",
     "@testing-library/jest-dom": "^6.0.0",
-    "@testing-library/react": "^14.0.0",
+    "@testing-library/react": "^16.0.0",
     "@vitejs/plugin-react": "^4.7.0",
     "babel-jest": "^30.0.4",
     "identity-obj-proxy": "^3.0.0",
