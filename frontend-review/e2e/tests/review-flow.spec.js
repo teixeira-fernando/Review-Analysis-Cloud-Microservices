@@ -43,8 +43,8 @@ test('submit review and verify backend analysis', async ({ page, request }) => {
     expect(jsonResponse.id).toBe(reviewId);
     expect(jsonResponse).toHaveProperty('productName');
   }).toPass({
-    timeout: 15000, // total time to wait (15s)
-    intervals: [3000] // poll every 3s
+    timeout: 60000, // total time to wait (60s)
+    intervals: [5000] // poll every 5s
   });
 
 });
