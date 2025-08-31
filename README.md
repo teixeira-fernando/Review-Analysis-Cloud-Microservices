@@ -116,6 +116,35 @@ You can also run the project using your favorite IDE. As mentioned, you just nee
 * Contract tests: <b>Pact framework</b> (TODO)
 * Continuous Integration: This project uses Github Action for Continuous Integration, where it executes all the tests and Sonar Cloud Analysis for every pull request, making easier the process of integration of every new code, also facilitating the process of Code Review.
 
+## Testcontainers and LocalStack together in action
+
+This project uses Testcontainers JS and LocalStack to create a robust, fully automated E2E testing environment for cloud microservices. The setup in `frontend-review/e2e/tests` orchestrates all required services (backend microservices, frontend, and LocalStack) using Docker Compose, managed programmatically via Testcontainers.
+
+**How it works:**
+- Testcontainers JS launches all containers defined in the Docker Compose file, including LocalStack (which emulates AWS services like S3 and SQS).
+- Custom wait strategies ensure each service is ready before tests run (e.g., waiting for health endpoints or log messages).
+- After startup, Testcontainers executes commands inside the LocalStack container to create required S3 buckets and SQS queues for the tests.
+- Playwright E2E tests interact with the running frontend and backend services, verifying the full review submission and analysis flow.
+- The entire environment is ephemeral: containers are started before tests and stopped/cleaned up automatically after.
+
+This approach ensures your tests run against a realistic, production-like environment, with AWS dependencies simulated by LocalStack, and all orchestration handled in code for maximum reproducibility and CI/CD compatibility.
+
+**How to run the E2E tests:**
+
+From the frontend-review folder, you can run:
+
+```bash
+npm run test:e2e
+```
+
+Or, to see all logs during test execution:
+
+```bash
+npm run test:e2e:all-logs
+```
+
+ ![Test flow with Testcontainers and LocalStack](images/TestStrategy_with_TestContainers.drawio.png)
+
 ## Pipeline Configuration
 
 Even though this project is using a single repository, it is still a microservices project. The CI/CD process is organized to make each service modular and independent. Below is an overview of the pipelines created for every pull request to the main branch:
