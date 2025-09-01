@@ -18,8 +18,8 @@ async function setupContainers() {
   console.log('Containers started successfully.');
 
   //execute custom commands inside LocalStack container
-  testContainersRuntime.getContainer('localstack').exec(['awslocal', 's3', 'mb', 's3://review-analysis-bucket']);
-  testContainersRuntime.getContainer('localstack').exec(['awslocal', 'sqs', 'create-queue', '--queue-name', 'review-analysis-queue']);
+  await testContainersRuntime.getContainer('localstack').exec(['awslocal', 's3', 'mb', 's3://review-analysis-bucket']);
+  await testContainersRuntime.getContainer('localstack').exec(['awslocal', 'sqs', 'create-queue', '--queue-name', 'review-analysis-queue']);
 
   return testContainersRuntime;
 }
