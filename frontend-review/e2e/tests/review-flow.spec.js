@@ -24,7 +24,7 @@ test('submit review and verify backend analysis', async ({ page, request }) => {
   await expect(page.getByTestId('form-message')).toHaveText(/Review submitted successfully!/i);
 
   // Verify the response status and content for the review submission
-  expect(createReviewResponse.status()).toBe(200);
+  await expect(createReviewResponse.status()).toBe(200);
   const reviewResponse = await createReviewResponse.json();
   expect(reviewResponse).toBeDefined();
   expect(reviewResponse).toHaveProperty('id');
