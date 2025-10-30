@@ -1,6 +1,6 @@
 services:
   localstack: # LocalStack container
-    image: localstack/localstack:4.0.3
+    image: localstack/localstack:4.10.0
     container_name: localstack
     ports:
       - "4566:4566"
