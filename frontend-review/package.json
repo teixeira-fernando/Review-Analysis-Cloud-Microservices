@@ -11,8 +11,8 @@
     "test:e2e:all-logs": "DEBUG=testcontainers* npx playwright test --trace on"
   },
   "dependencies": {
-    "react": "^18.2.0",
-    "react-dom": "^18.2.0"
+    "react": "^19.0.0",
+    "react-dom": "^19.0.0"
   },
   "devDependencies": {
     "@babel/preset-env": "^7.28.0",
