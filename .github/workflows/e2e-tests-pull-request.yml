@@ -71,7 +71,7 @@ jobs:
           echo "IMAGE_TAG=$IMAGE_TAG_ENV" >> $GITHUB_OUTPUT
 
       - name: Build and push Docker image - Review Collector
-        uses: docker/build-push-action@3b5e8027fcad23fda98b2e3ac259d8d67585f671
+        uses: docker/build-push-action@64c9b141502b80dbbd71e008a0130ad330f480f8
         with:
           context: ./review-collector  # Path to the folder where Dockerfile is located
           file: ./review-collector/Dockerfile
@@ -79,7 +79,7 @@ jobs:
           tags: teixeirafernando/review-collector:${{ env.IMAGE_TAG }}
 
       - name: Build and push Docker image - Review Analyzer
-        uses: docker/build-push-action@3b5e8027fcad23fda98b2e3ac259d8d67585f671
+        uses: docker/build-push-action@64c9b141502b80dbbd71e008a0130ad330f480f8
         with:
           context: ./review-analyzer  # Path to the folder where Dockerfile is located
           file: ./review-analyzer/Dockerfile
