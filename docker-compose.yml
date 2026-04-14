@@ -23,7 +23,7 @@ services:
       redis:
         condition: service_healthy
     healthcheck:
-      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://localhost:4566/_ministack/health')"]
+      test: ["CMD", "python", "-c", "import urllib.request, sys; urllib.request.urlopen('http://localhost:4566/_ministack/health') or sys.exit(1)"]
       interval: 10s
       timeout: 3s
       retries: 3
@@ -90,10 +90,14 @@ services:
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
     depends_on:
-      - review-collector
-      - review-analyzer
-      - frontend-review
-      - ministack-setup
+      review-collector:
+        condition: service_started
+      review-analyzer:
+        condition: service_started
+      frontend-review:
+        condition: service_started
+      ministack-setup:
+        condition: service_completed_successfully
     networks:
       - ls
     entrypoint: [ "sh", "-c", "while ! nc -z review-collector 8080; do sleep 1; done; while ! nc -z review-analyzer 8081; do sleep 1; done; ./gradlew :e2e-tests:test --tests '*ReviewAnalysisE2ETest'" ]
