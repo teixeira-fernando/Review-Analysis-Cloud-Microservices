@@ -77,6 +77,11 @@ services:
   frontend-review:
     image: teixeirafernando/frontend-review:latest
     container_name: frontend-review
+    depends_on:
+      review-collector:
+        condition: service_started
+      review-analyzer:
+        condition: service_started
     ports:
       - "3000:80"
     networks:
