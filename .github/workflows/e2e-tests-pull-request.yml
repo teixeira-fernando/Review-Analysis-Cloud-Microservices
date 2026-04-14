@@ -27,7 +27,7 @@ jobs:
         run: ./gradlew :review-analyzer:build -x test
       - name: Build without Tests Gradle - Review Collector
         run: ./gradlew :review-collector:build -x test
-      - name: Run docker-compose - LocalStack setup
+      - name: Run docker-compose - MiniStack setup
         run: docker compose up --build --abort-on-container-exit
       - name: Tear down Docker Compose
         run: docker compose down

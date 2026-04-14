@@ -1,15 +1,48 @@
 version: '3'
 
 services:
-  localstack: # LocalStack container
-    image: localstack/localstack:4.10.0
+  redis:
+    image: redis:7-alpine
+    container_name: ministack-redis
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 5s
+      timeout: 3s
+      retries: 5
+    networks:
+      - ls
+
+  ministack: # MiniStack container
+    image: ministackorg/ministack
     ports:
-      # Now only required if you need to access LocalStack from the host
       - "127.0.0.1:4566:4566"
-      # Now only required if you need to access LocalStack from the host
-      - "127.0.0.1:4510-4559:4510-4559"
+    environment:
+      - REDIS_HOST=redis
+      - REDIS_PORT=6379
+    depends_on:
+      redis:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://localhost:4566/_ministack/health')"]
+      interval: 10s
+      timeout: 3s
+      retries: 3
+      start_period: 5s
+    networks:
+      - ls
+
+  ministack-setup:
+    image: amazon/aws-cli
+    environment:
+      - AWS_ACCESS_KEY_ID=test
+      - AWS_SECRET_ACCESS_KEY=test
+      - AWS_DEFAULT_REGION=us-east-1
     volumes:
-      - ./localstack-setup.sh:/etc/localstack/init/ready.d/script.sh
+      - ./ministack-setup.sh:/ministack-setup.sh
+    entrypoint: ["/bin/sh", "/ministack-setup.sh"]
+    depends_on:
+      ministack:
+        condition: service_healthy
     networks:
       - ls
 
@@ -18,9 +51,10 @@ services:
     image: teixeirafernando/review-collector:latest
     container_name: review-collector
     environment:
-      AWS_ENDPOINT: http://localstack:4566
+      AWS_ENDPOINT: http://ministack:4566
     depends_on:
-      - localstack
+      ministack-setup:
+        condition: service_completed_successfully
     ports:
       - "8080:8080"
     networks:
@@ -30,9 +64,10 @@ services:
     image: teixeirafernando/review-analyzer:latest
     container_name: review-analyzer
     environment:
-      AWS_ENDPOINT: http://localstack:4566
+      AWS_ENDPOINT: http://ministack:4566
     depends_on:
-      - localstack
+      ministack-setup:
+        condition: service_completed_successfully
     ports:
       - "8081:8081"
     networks:
@@ -58,7 +93,7 @@ services:
       - review-collector
       - review-analyzer
       - frontend-review
-      - localstack
+      - ministack-setup
     networks:
       - ls
     entrypoint: [ "sh", "-c", "while ! nc -z review-collector 8080; do sleep 1; done; while ! nc -z review-analyzer 8081; do sleep 1; done; ./gradlew :e2e-tests:test --tests '*ReviewAnalysisE2ETest'" ]
