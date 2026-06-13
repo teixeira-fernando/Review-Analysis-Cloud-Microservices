@@ -33,3 +33,17 @@ jobs:
       - name: Test with Gradle
         run: ./gradlew :review-collector:test
 
+      - name: Generate coverage report
+        run: ./gradlew :review-collector:jacocoTestReport
+        continue-on-error: true
+
+      - name: Upload coverage artifacts
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: review-collector-coverage-report
+          path: |
+            review-collector/build/reports/jacoco/test/
+            review-collector/build/jacoco/test.exec
+          if-no-files-found: ignore
+

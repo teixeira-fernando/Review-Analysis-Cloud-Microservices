@@ -111,7 +111,7 @@ You can also run the project using your favorite IDE. As mentioned, you just nee
 * E2E tests:  <b>Playwright, Rest Assured, Localstack</b>
 * Quality Metrics:
     * Mutation Tests/Mutation Coverage: <b>PITest</b> (TODO)
-    * Code Coverage: <b>Jacoco</b> (TODO)
+  * Code Coverage: <b>JaCoCo</b> reports for backend services in pull request pipelines (XML + HTML artifacts)
     * Technical Debt, Code Smells and other complementary metrics : <b>Sonar Cloud</b>
 * Contract tests: <b>Pact framework</b> (TODO)
 * Continuous Integration: This project uses Github Action for Continuous Integration, where it executes all the tests and Sonar Cloud Analysis for every pull request, making easier the process of integration of every new code, also facilitating the process of Code Review.
@@ -153,8 +153,10 @@ Even though this project is using a single repository, it is still a microservic
 
 * **review-analyzer-pull-request**
   * Builds and runs the unit and integration tests for the `review-analyzer` service.
+  * Generates JaCoCo coverage report and uploads it as workflow artifact (`review-analyzer-coverage-report`).
 * **review-collector-pull-request**
   * Builds and runs the unit and integration tests for the `review-collector` service.
+  * Generates JaCoCo coverage report and uploads it as workflow artifact (`review-collector-coverage-report`).
 * **frontend-review-pull-request**
   * Builds and runs the unit, integration and e2e tests for the `frontend-review` frontend.
 * **e2e-tests-pull-request**
