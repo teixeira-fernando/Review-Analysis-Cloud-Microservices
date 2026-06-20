@@ -1,53 +1,57 @@
 package com.teixeirafernando.review.analyzer;
 
+import io.floci.testcontainers.FlociContainer;
 import org.junit.jupiter.api.BeforeAll;
 import org.springframework.test.context.DynamicPropertyRegistry;
 import org.springframework.test.context.DynamicPropertySource;
-import org.testcontainers.containers.localstack.LocalStackContainer;
 import org.testcontainers.junit.jupiter.Container;
 import org.testcontainers.junit.jupiter.Testcontainers;
-import org.testcontainers.utility.DockerImageName;
+import software.amazon.awssdk.auth.credentials.AwsBasicCredentials;
+import software.amazon.awssdk.auth.credentials.StaticCredentialsProvider;
+import software.amazon.awssdk.regions.Region;
+import software.amazon.awssdk.services.s3.S3Client;
+import software.amazon.awssdk.services.sqs.SqsClient;
 
-import java.io.IOException;
+import java.net.URI;
 import java.util.UUID;
 
-import static org.testcontainers.containers.localstack.LocalStackContainer.Service.S3;
-import static org.testcontainers.containers.localstack.LocalStackContainer.Service.SQS;
 @Testcontainers
 public abstract class TestContainersConfiguration {
 
     @Container
-    protected static LocalStackContainer localStack = new LocalStackContainer(
-            DockerImageName.parse("localstack/localstack:4.0.3")
-    );
+    protected static FlociContainer floci = new FlociContainer();
 
-    @BeforeAll
-    static void beforeAll() throws IOException, InterruptedException {
-        localStack.execInContainer("awslocal", "s3", "mb", "s3://" + BUCKET_NAME);
-        localStack.execInContainer(
-                "awslocal",
-                "sqs",
-                "create-queue",
-                "--queue-name",
-                QUEUE_NAME
-        );
-    }
-
-    protected void insertTestDataToSQSQueue(String testData) throws IOException, InterruptedException {
-        localStack.execInContainer(
-                "awslocal",
-                "sqs",
-                "send-message",
-                "--queue-url",
-                SQSUrl +"/"+QUEUE_NAME,
-                "--message-body",
-                testData
-        );
-    }
-
-    static protected final String SQSUrl = "http://sqs.us-east-1.localhost.localstack.cloud:4566/000000000000";
     static protected final String BUCKET_NAME = UUID.randomUUID().toString();
     static protected final String QUEUE_NAME = UUID.randomUUID().toString();
+
+    protected static SqsClient sqsClient;
+    protected static S3Client s3Client;
+
+    @BeforeAll
+    static void beforeAll() {
+        sqsClient = SqsClient.builder()
+                .endpointOverride(URI.create(floci.getEndpoint()))
+                .region(Region.of(floci.getRegion()))
+                .credentialsProvider(StaticCredentialsProvider.create(
+                        AwsBasicCredentials.create(floci.getAccessKey(), floci.getSecretKey())))
+                .build();
+
+        s3Client = S3Client.builder()
+                .endpointOverride(URI.create(floci.getEndpoint()))
+                .region(Region.of(floci.getRegion()))
+                .credentialsProvider(StaticCredentialsProvider.create(
+                        AwsBasicCredentials.create(floci.getAccessKey(), floci.getSecretKey())))
+                .forcePathStyle(true)
+                .build();
+
+        s3Client.createBucket(b -> b.bucket(BUCKET_NAME));
+        sqsClient.createQueue(b -> b.queueName(QUEUE_NAME));
+    }
+
+    protected void insertTestDataToSQSQueue(String testData) {
+        String queueUrl = sqsClient.getQueueUrl(b -> b.queueName(QUEUE_NAME)).queueUrl();
+        sqsClient.sendMessage(b -> b.queueUrl(queueUrl).messageBody(testData));
+    }
 
     @DynamicPropertySource
     static void overrideProperties(DynamicPropertyRegistry registry) {
@@ -55,23 +59,23 @@ public abstract class TestContainersConfiguration {
         registry.add("app.queue", () -> QUEUE_NAME);
         registry.add(
                 "spring.cloud.aws.region.static",
-                () -> localStack.getRegion()
+                () -> floci.getRegion()
         );
         registry.add(
                 "spring.cloud.aws.credentials.access-key",
-                () -> localStack.getAccessKey()
+                () -> floci.getAccessKey()
         );
         registry.add(
                 "spring.cloud.aws.credentials.secret-key",
-                () -> localStack.getSecretKey()
+                () -> floci.getSecretKey()
         );
         registry.add(
                 "spring.cloud.aws.s3.endpoint",
-                () -> localStack.getEndpointOverride(S3).toString()
+                () -> floci.getEndpoint()
         );
         registry.add(
                 "spring.cloud.aws.sqs.endpoint",
-                () -> localStack.getEndpointOverride(SQS).toString()
+                () -> floci.getEndpoint()
         );
     }
 }
