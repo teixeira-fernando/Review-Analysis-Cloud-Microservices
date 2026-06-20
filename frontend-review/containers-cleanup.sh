@@ -1,5 +1,7 @@
-docker stop /localstack
-docker rm /localstack
+docker stop /ministack
+docker rm /ministack
+docker stop /ministack-redis
+docker rm /ministack-redis
 docker stop /frontend-review
 docker rm /frontend-review
 docker stop /review-analyzer
