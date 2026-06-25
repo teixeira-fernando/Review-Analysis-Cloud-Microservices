@@ -10,7 +10,8 @@
 - [Instructions to run the project](#instructions-to-run-the-project)
   - [Docker - using Localstack](#1---docker---using-localstack)
   - [Docker - using real AWS services](#2---docker---using-real-aws-services)
-  - [Using your favorite IDE](#3---using-your-favorite-ide)
+  - [Infrastructure as Code with Terraform](#3---infrastructure-as-code-with-terraform)
+  - [Using your favorite IDE](#4---using-your-favorite-ide)
 - [QA Strategy](#qa-strategy)
 - [Pipeline Configuration](#pipeline-configuration)
 - [Development Info](#development-info)
@@ -31,6 +32,7 @@
 - **Java 21**
 - **Spring Boot**
 - **Gradle**
+- **Terraform** (Infrastructure as Code for AWS)
 - **Test Containers**
 - **Localstack**
 - **JUnit 5**
@@ -44,6 +46,7 @@
 - **Docker**
 - **Node**
 - **Gradle and Java**
+- **Terraform** (optional, for Infrastructure as Code setup)
 - **An AWS account** (if you want to run it using real services; you can use LocalStack which does not require an AWS Account)
 
 
@@ -84,7 +87,40 @@ docker compose -f docker-compose-real-AWS-services.yml up
 
 The frontend will be available at [http://localhost:3000](http://localhost:3000).
 
-#### 3 - Using your favorite IDE
+#### 3 - Infrastructure as Code with Terraform
+
+This project includes Terraform configuration to manage AWS resources (S3 bucket and SQS queue) as Infrastructure as Code. Terraform supports both LocalStack (development) and real AWS (production).
+
+**Prerequisites:** [Install Terraform](https://learn.hashicorp.com/tutorials/terraform/install-cli)
+
+**Quick Start with LocalStack:**
+
+```Shell
+# Initialize Terraform (first time only)
+cd terraform
+terraform init
+
+# Plan and apply with LocalStack configuration
+terraform plan -var-file=local.tfvars
+terraform apply -var-file=local.tfvars
+
+# Start the services (in another terminal, from project root)
+docker compose up
+```
+
+**For Production AWS:**
+
+```Shell
+export AWS_ACCESS_KEY_ID="your-access-key"
+export AWS_SECRET_ACCESS_KEY="your-secret-key"
+
+cd terraform
+terraform apply -var-file=prod.tfvars
+```
+
+📖 **For comprehensive Terraform documentation**, see [TERRAFORM.md](TERRAFORM.md).
+
+#### 4 - Using your favorite IDE
 
 You can also run the project using your favorite IDE. As mentioned, you just need the Java JDK and Gradle properly installed and configured on your machine. Let me show you how to easily run the 2 services from the project in that way.
 
