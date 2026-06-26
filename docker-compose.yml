@@ -8,8 +8,36 @@ services:
       - "127.0.0.1:4566:4566"
       # Now only required if you need to access LocalStack from the host
       - "127.0.0.1:4510-4559:4510-4559"
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:4566/_localstack/health"]
+      interval: 5s
+      timeout: 10s
+      retries: 10
+      start_period: 15s
     networks:
       - ls
+
+
+  terraform-init:
+    image: hashicorp/terraform:latest
+    working_dir: /terraform
+    volumes:
+      - ./terraform:/terraform
+    environment:
+      - AWS_ACCESS_KEY_ID=test
+      - AWS_SECRET_ACCESS_KEY=test
+      - AWS_DEFAULT_REGION=eu-central-1
+    depends_on:
+      localstack:
+        condition: service_healthy
+    networks:
+      - ls
+    entrypoint:
+      - sh
+      - -c
+      - |
+        terraform init
+        terraform apply -var-file=local.tfvars -auto-approve
 
 
   review-collector:
@@ -18,7 +46,8 @@ services:
     environment:
       AWS_ENDPOINT: http://localstack:4566
     depends_on:
-      - localstack
+      terraform-init:
+        condition: service_completed_successfully
     ports:
       - "8080:8080"
     networks:
@@ -30,7 +59,8 @@ services:
     environment:
       AWS_ENDPOINT: http://localstack:4566
     depends_on:
-      - localstack
+      terraform-init:
+        condition: service_completed_successfully
     ports:
       - "8081:8081"
     networks:
