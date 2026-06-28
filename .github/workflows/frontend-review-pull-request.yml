@@ -27,6 +27,8 @@ jobs:
         run: |
           cd frontend-review
           npm test
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v3
       - name: Test - e2e tests
         run: |
           cd frontend-review

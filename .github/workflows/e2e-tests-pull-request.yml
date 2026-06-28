@@ -27,10 +27,10 @@ jobs:
         run: ./gradlew :review-analyzer:build -x test
       - name: Build without Tests Gradle - Review Collector
         run: ./gradlew :review-collector:build -x test
-      - name: Run docker-compose - LocalStack setup
-        run: docker compose up --build --abort-on-container-exit
-      - name: Tear down Docker Compose
-        run: docker compose down
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v3
+      - name: Run E2E flow (LocalStack + Terraform + Docker Compose)
+        run: ./e2e-orchestrate.sh
 
   Run-Tests-With-Whole-Setup-Already-Included:
     runs-on: ubuntu-latest
@@ -76,7 +76,7 @@ jobs:
           context: ./review-collector  # Path to the folder where Dockerfile is located
           file: ./review-collector/Dockerfile
           push: true
-          tags: teixeirafernando/review-collector:${{ env.IMAGE_TAG }}
+          tags: teixeirafernando/review-collector:${{ steps.env.outputs.IMAGE_TAG }}
 
       - name: Build and push Docker image - Review Analyzer
         uses: docker/build-push-action@3b5e8027fcad23fda98b2e3ac259d8d67585f671
@@ -84,9 +84,9 @@ jobs:
           context: ./review-analyzer  # Path to the folder where Dockerfile is located
           file: ./review-analyzer/Dockerfile
           push: true
-          tags: teixeirafernando/review-analyzer:${{ env.IMAGE_TAG }}
+          tags: teixeirafernando/review-analyzer:${{ steps.env.outputs.IMAGE_TAG }}
       - name: Run Test - ReviewAnalysisE2ETestWithEverything
         env:
-          REVIEW_COLLECTOR_DOCKER_IMAGE: teixeirafernando/review-collector:${{ env.IMAGE_TAG }}
-          REVIEW_ANALYZER_DOCKER_IMAGE: teixeirafernando/review-analyzer:${{ env.IMAGE_TAG }}
+          REVIEW_COLLECTOR_DOCKER_IMAGE: teixeirafernando/review-collector:${{ steps.env.outputs.IMAGE_TAG }}
+          REVIEW_ANALYZER_DOCKER_IMAGE: teixeirafernando/review-analyzer:${{ steps.env.outputs.IMAGE_TAG }}
         run: ./gradlew :e2e-tests:test --tests '*ReviewAnalysisE2ETestWithEverything'

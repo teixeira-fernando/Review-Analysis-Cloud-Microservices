@@ -1,12 +1,26 @@
 const path = require('path');
+const { execSync } = require('child_process');
 const { DockerComposeEnvironment, Wait } = require('testcontainers');
 
 const composeFile = path.resolve(__dirname, '../docker-compose-frontend-development.yml');
+const terraformDir = path.resolve(__dirname, '../../terraform');
 let testContainersRuntime;
+
+function provisionAwsResourcesWithTerraform() {
+  execSync('terraform init', {
+    cwd: terraformDir,
+    stdio: 'inherit',
+  });
+
+  execSync('terraform apply -var-file=local.tfvars -auto-approve', {
+    cwd: terraformDir,
+    stdio: 'inherit',
+  });
+}
 
 async function setupContainers() {
 
-  let testContainersRuntime = await new DockerComposeEnvironment(
+  testContainersRuntime = await new DockerComposeEnvironment(
       path.dirname(composeFile),
       path.basename(composeFile)
     )
@@ -17,9 +31,7 @@ async function setupContainers() {
 
   console.log('Containers started successfully.');
 
-  //execute custom commands inside LocalStack container
-  await testContainersRuntime.getContainer('localstack').exec(['awslocal', 's3', 'mb', 's3://review-analysis-bucket']);
-  await testContainersRuntime.getContainer('localstack').exec(['awslocal', 'sqs', 'create-queue', '--queue-name', 'review-analysis-queue']);
+  provisionAwsResourcesWithTerraform();
 
   return testContainersRuntime;
 }
