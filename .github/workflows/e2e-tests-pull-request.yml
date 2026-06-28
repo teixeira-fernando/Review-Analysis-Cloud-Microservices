@@ -29,7 +29,7 @@ jobs:
         run: ./gradlew :review-collector:build -x test
       - name: Setup Terraform
         uses: hashicorp/setup-terraform@v3
-      - name: Run E2E flow (LocalStack + Terraform + Compose)
+      - name: Run E2E flow (LocalStack + Terraform + Docker Compose)
         run: ./e2e-orchestrate.sh
 
   Run-Tests-With-Whole-Setup-Already-Included:
