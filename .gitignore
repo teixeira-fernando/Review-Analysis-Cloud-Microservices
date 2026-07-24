@@ -41,3 +41,20 @@ frontend-review/node_modules/
 frontend-review/dist/
 frontend-review/.env
 frontend-review/test-results/
+
+### Terraform ###
+terraform/.terraform/
+terraform/.terraform.lock.hcl
+terraform/terraform.tfstate
+terraform/terraform.tfstate.*
+terraform/*.tfstate
+terraform/*.tfstate.*
+terraform/crash.log
+terraform/crash.*.log
+terraform/.terraformrc
+terraform/env.tfvars
+# Local .tfvars files (allow committed .tfvars files for shared configs)
+terraform/override.tf
+terraform/override.tf.json
+*_override.tf
+*_override.tf.json
