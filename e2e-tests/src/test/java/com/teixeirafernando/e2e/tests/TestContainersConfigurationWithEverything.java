@@ -5,21 +5,25 @@ import com.github.dockerjava.api.model.ExposedPort;
 import com.github.dockerjava.api.model.HostConfig;
 import com.github.dockerjava.api.model.PortBinding;
 import com.github.dockerjava.api.model.Ports;
+import io.floci.testcontainers.FlociContainer;
 import org.junit.jupiter.api.BeforeAll;
 import org.slf4j.LoggerFactory;
 import org.springframework.test.context.DynamicPropertyRegistry;
 import org.springframework.test.context.DynamicPropertySource;
 import org.testcontainers.containers.GenericContainer;
 import org.testcontainers.containers.Network;
-import org.testcontainers.containers.localstack.LocalStackContainer;
 import org.testcontainers.containers.output.Slf4jLogConsumer;
 import org.testcontainers.containers.wait.strategy.Wait;
 import org.testcontainers.junit.jupiter.Container;
 import org.testcontainers.junit.jupiter.Testcontainers;
 import org.testcontainers.lifecycle.Startables;
-import org.testcontainers.utility.DockerImageName;
+import software.amazon.awssdk.auth.credentials.AwsBasicCredentials;
+import software.amazon.awssdk.auth.credentials.StaticCredentialsProvider;
+import software.amazon.awssdk.regions.Region;
+import software.amazon.awssdk.services.s3.S3Client;
+import software.amazon.awssdk.services.sqs.SqsClient;
 
-import java.io.IOException;
+import java.net.URI;
 import java.util.Optional;
 
 @Testcontainers
@@ -33,20 +37,28 @@ public class TestContainersConfigurationWithEverything {
     static protected final String QUEUE_NAME = "review-analysis-queue";
 
     @Container
-    protected static LocalStackContainer localStack = new LocalStackContainer(
-            DockerImageName.parse("localstack/localstack:4.0.3")
-    ).withNetwork(SHARED_NETWORK).withNetworkAliases("localstack");
+    protected static FlociContainer floci = new FlociContainer()
+            .withNetwork(SHARED_NETWORK).withNetworkAliases("floci");
 
     @BeforeAll
-    static void beforeAll() throws IOException, InterruptedException {
-        localStack.execInContainer("awslocal", "s3", "mb", "s3://" + BUCKET_NAME);
-        localStack.execInContainer(
-                "awslocal",
-                "sqs",
-                "create-queue",
-                "--queue-name",
-                QUEUE_NAME
-        );
+    static void beforeAll() {
+        S3Client s3Client = S3Client.builder()
+                .endpointOverride(URI.create(floci.getEndpoint()))
+                .region(Region.of(floci.getRegion()))
+                .credentialsProvider(StaticCredentialsProvider.create(
+                        AwsBasicCredentials.create(floci.getAccessKey(), floci.getSecretKey())))
+                .forcePathStyle(true)
+                .build();
+
+        SqsClient sqsClient = SqsClient.builder()
+                .endpointOverride(URI.create(floci.getEndpoint()))
+                .region(Region.of(floci.getRegion()))
+                .credentialsProvider(StaticCredentialsProvider.create(
+                        AwsBasicCredentials.create(floci.getAccessKey(), floci.getSecretKey())))
+                .build();
+
+        s3Client.createBucket(b -> b.bucket(BUCKET_NAME));
+        sqsClient.createQueue(b -> b.queueName(QUEUE_NAME));
 
         ReviewCollectorService = createReviewCollectorServiceContainer(8080);
         ReviewAnalyzerService = createReviewAnalyzerServiceContainer(8081);
@@ -67,7 +79,7 @@ public class TestContainersConfigurationWithEverything {
                 .orElse("teixeirafernando/review-collector:latest");
 
         return new GenericContainer<>(reviewCollectorImage)
-                .withEnv("AWS_ENDPOINT", "http://localstack:4566")
+                .withEnv("AWS_ENDPOINT", "http://floci:4566")
                 .withExposedPorts(port)
                 .withNetwork(SHARED_NETWORK)
                 .withNetworkAliases("review-collector-service")
@@ -94,7 +106,7 @@ public class TestContainersConfigurationWithEverything {
                 .orElse("teixeirafernando/review-analyzer:latest");
 
         return new GenericContainer<>(reviewAnalyzerImage)
-                .withEnv("AWS_ENDPOINT", "http://localstack:4566")
+                .withEnv("AWS_ENDPOINT", "http://floci:4566")
                 .withExposedPorts(port)
                 .withNetwork(SHARED_NETWORK)
                 .withNetworkAliases("review-analyzer-service")

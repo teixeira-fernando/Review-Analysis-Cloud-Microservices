@@ -37,7 +37,7 @@ public class ReviewAnalyzerServiceIntegrationTest extends TestContainersConfigur
     ApplicationProperties properties;
 
     @Test
-    void shouldProcessMessagesInTheQueueSuccessfullyAndPushToS3Bucket() throws IOException, InterruptedException, JSONException {
+    void shouldProcessMessagesInTheQueueSuccessfullyAndPushToS3Bucket() throws IOException, JSONException {
         this.insertTestDataToSQSQueue("""
                 {
                     "id": "e921412f-af4b-4b1f-bec4-734982b2fb9c",
@@ -71,7 +71,7 @@ public class ReviewAnalyzerServiceIntegrationTest extends TestContainersConfigur
 
     @ParameterizedTest
     @MethodSource("provideMessagesForTest")
-    void shouldRejectMessagesWithMissingFieldsOrIncorrectFormat(String id, String message) throws IOException, InterruptedException, JSONException {
+    void shouldRejectMessagesWithMissingFieldsOrIncorrectFormat(String id, String message) throws JSONException {
         this.insertTestDataToSQSQueue(message);
 
         await()

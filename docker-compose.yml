@@ -1,13 +1,11 @@
 version: '3'
 
 services:
-  localstack: # LocalStack container
-    image: localstack/localstack:4.10.0
+  floci: # Floci container (open-source LocalStack replacement)
+    image: floci/floci:latest-compat
     ports:
-      # Now only required if you need to access LocalStack from the host
+      # Required if you need to access Floci from the host
       - "127.0.0.1:4566:4566"
-      # Now only required if you need to access LocalStack from the host
-      - "127.0.0.1:4510-4559:4510-4559"
     volumes:
       - ./localstack-setup.sh:/etc/localstack/init/ready.d/script.sh
     networks:
@@ -18,9 +16,9 @@ services:
     image: teixeirafernando/review-collector:latest
     container_name: review-collector
     environment:
-      AWS_ENDPOINT: http://localstack:4566
+      AWS_ENDPOINT: http://floci:4566
     depends_on:
-      - localstack
+      - floci
     ports:
       - "8080:8080"
     networks:
@@ -30,9 +28,9 @@ services:
     image: teixeirafernando/review-analyzer:latest
     container_name: review-analyzer
     environment:
-      AWS_ENDPOINT: http://localstack:4566
+      AWS_ENDPOINT: http://floci:4566
     depends_on:
-      - localstack
+      - floci
     ports:
       - "8081:8081"
     networks:
@@ -58,7 +56,7 @@ services:
       - review-collector
       - review-analyzer
       - frontend-review
-      - localstack
+      - floci
     networks:
       - ls
     entrypoint: [ "sh", "-c", "while ! nc -z review-collector 8080; do sleep 1; done; while ! nc -z review-analyzer 8081; do sleep 1; done; ./gradlew :e2e-tests:test --tests '*ReviewAnalysisE2ETest'" ]
