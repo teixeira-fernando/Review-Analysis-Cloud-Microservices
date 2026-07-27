@@ -19,7 +19,7 @@ async function setupContainers() {
 
   //execute custom commands inside LocalStack container
   await testContainersRuntime.getContainer('localstack').exec(['awslocal', 's3', 'mb', 's3://review-analysis-bucket']);
-  await testContainersRuntime.getContainer('localstack').exec(['awslocal', 'sqs', 'create-queue', '--queue-name', 'review-analysis-queue']);
+  await testContainersRuntime.getContainer('localstack').exec(['awslocal', '--region', 'eu-central-1', 'sqs', 'create-queue', '--queue-name', 'review-analysis-queue']);
 
   return testContainersRuntime;
 }
