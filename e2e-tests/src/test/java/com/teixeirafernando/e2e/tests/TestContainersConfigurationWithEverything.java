@@ -31,6 +31,7 @@ public class TestContainersConfigurationWithEverything {
 
     static protected final String BUCKET_NAME = "review-analysis-bucket";
     static protected final String QUEUE_NAME = "review-analysis-queue";
+    private static final String AWS_REGION = "eu-central-1";
 
     @Container
     protected static LocalStackContainer localStack = new LocalStackContainer(
@@ -39,9 +40,11 @@ public class TestContainersConfigurationWithEverything {
 
     @BeforeAll
     static void beforeAll() throws IOException, InterruptedException {
-        localStack.execInContainer("awslocal", "s3", "mb", "s3://" + BUCKET_NAME);
+        localStack.execInContainer("awslocal", "--region", AWS_REGION, "s3", "mb", "s3://" + BUCKET_NAME);
         localStack.execInContainer(
                 "awslocal",
+                "--region",
+                AWS_REGION,
                 "sqs",
                 "create-queue",
                 "--queue-name",
@@ -116,4 +119,3 @@ public class TestContainersConfigurationWithEverything {
     }
 
 }
-
