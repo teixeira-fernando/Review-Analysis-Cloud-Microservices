@@ -17,6 +17,8 @@ import static org.testcontainers.containers.localstack.LocalStackContainer.Servi
 @Testcontainers
 public abstract class TestContainersConfiguration {
 
+    private static final String AWS_REGION = "eu-central-1";
+
     @Container
     protected static LocalStackContainer localStack = new LocalStackContainer(
             DockerImageName.parse("localstack/localstack:4.0.3")
@@ -24,9 +26,11 @@ public abstract class TestContainersConfiguration {
 
     @BeforeAll
     static void beforeAll() throws IOException, InterruptedException {
-        localStack.execInContainer("awslocal", "s3", "mb", "s3://" + BUCKET_NAME);
+        localStack.execInContainer("awslocal", "--region", AWS_REGION, "s3", "mb", "s3://" + BUCKET_NAME);
         localStack.execInContainer(
                 "awslocal",
+                "--region",
+                AWS_REGION,
                 "sqs",
                 "create-queue",
                 "--queue-name",
@@ -63,4 +67,3 @@ public abstract class TestContainersConfiguration {
         );
     }
 }
-

@@ -40,7 +40,7 @@ public class TestContainersConfigurationWithEverything {
 
     @BeforeAll
     static void beforeAll() throws IOException, InterruptedException {
-        localStack.execInContainer("awslocal", "s3", "mb", "s3://" + BUCKET_NAME);
+        localStack.execInContainer("awslocal", "--region", AWS_REGION, "s3", "mb", "s3://" + BUCKET_NAME);
         localStack.execInContainer(
                 "awslocal",
                 "--region",
