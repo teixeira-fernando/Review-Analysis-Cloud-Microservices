@@ -11,7 +11,7 @@ module.exports = defineConfig({
   globalTeardown: require.resolve('./e2e/global-teardown.js'),
   use: {
     baseURL,
-    headless: true,
+    headless: false,
     screenshot: 'only-on-failure',
     video: 'retain-on-failure',
     trace: 'retain-on-failure',

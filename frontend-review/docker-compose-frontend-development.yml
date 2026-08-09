@@ -1,14 +1,11 @@
 services:
-  localstack: # LocalStack container
-    image: localstack/localstack:4.10.0
+  localstack: 
+    image: localstack/localstack:4.0.3
     container_name: localstack
     ports:
       - "4566:4566"
-    volumes:
-      - ../localstack-setup.sh:/etc/localstack/init/ready.d/script.sh
     networks:
       - ls
-
 
   review-collector:
     image: teixeirafernando/review-collector:latest
