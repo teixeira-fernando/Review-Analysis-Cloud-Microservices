@@ -6,10 +6,11 @@ let testContainersRuntime;
 
 async function setupContainers() {
 
-  let testContainersRuntime = await new DockerComposeEnvironment(
+  testContainersRuntime = await new DockerComposeEnvironment(
       path.dirname(composeFile),
       path.basename(composeFile)
     )
+      .withNoRecreate()
       .withWaitStrategy('localstack', Wait.forLogMessage('Ready'))
       .withWaitStrategy('review-collector', Wait.forHttp("/actuator/health", 8080).forStatusCode(200))
       .withWaitStrategy('review-analyzer', Wait.forHttp("/actuator/health", 8081).forStatusCode(200))
@@ -26,7 +27,7 @@ async function setupContainers() {
 
 async function teardownContainers() {
   if (testContainersRuntime) {
-    await testContainersRuntime.down();
+    await testContainersRuntime.down({timeout: 5000});
   }
 }
 
