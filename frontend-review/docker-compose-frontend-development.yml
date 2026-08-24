@@ -1,17 +1,17 @@
 services:
   localstack: # LocalStack container
-    image: localstack/localstack:4.10.0
+    image: localstack/localstack:4.0.3
     container_name: localstack
     ports:
       - "4566:4566"
-    volumes:
-      - ../localstack-setup.sh:/etc/localstack/init/ready.d/script.sh
     networks:
       - ls
 
 
   review-collector:
-    image: teixeirafernando/review-collector:latest
+    build:
+      context: ../review-collector
+      dockerfile: Dockerfile
     container_name: review-collector
     environment:
       AWS_ENDPOINT: http://localstack:4566
@@ -23,7 +23,9 @@ services:
       - ls
 
   review-analyzer:
-    image: teixeirafernando/review-analyzer:latest
+    build:
+      context: ../review-analyzer
+      dockerfile: Dockerfile
     container_name: review-analyzer
     environment:
       AWS_ENDPOINT: http://localstack:4566
