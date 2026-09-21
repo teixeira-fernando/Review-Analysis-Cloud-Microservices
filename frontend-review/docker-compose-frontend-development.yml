@@ -8,7 +8,7 @@ services:
       - ls
 
   review-collector:
-    image: teixeirafernando/review-collector:latest
+    image: teixeirafernando/review-collector:1.0
     container_name: review-collector
     environment:
       AWS_ENDPOINT: http://localstack:4566
@@ -20,7 +20,7 @@ services:
       - ls
 
   review-analyzer:
-    image: teixeirafernando/review-analyzer:latest
+    image: teixeirafernando/review-analyzer:1.0
     container_name: review-analyzer
     environment:
       AWS_ENDPOINT: http://localstack:4566
